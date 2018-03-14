@@ -27,7 +27,7 @@ const networkInterface = createNetworkInterface({
 
 const Root = () => {
     return (
-        <ApolloProvider client={client}>
+        // <ApolloProvider client={client}>
             <Router history={hashHistory}>
                 <Route path="/" component={App}>
                     <IndexRoute component={LoginForm} />
@@ -37,7 +37,7 @@ const Root = () => {
                     <Route path="assetSearch" component={requireAuth(AssetSearch)} />
                 </Route>
             </Router>
-        </ApolloProvider>
+        // </ApolloProvider>
     );
 };
 
