@@ -1,6 +1,9 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WriteFilePlugin = require('write-file-webpack-plugin');
 const path = require('path');
+const fs = require('fs');
+const lessToJs = require('less-vars-to-js');
+const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, './ant-theme-vars.less'), 'utf8'));
 
 module.exports = {
     entry: './client/index.js',
@@ -15,9 +18,21 @@ module.exports = {
     module: {
         rules: [
             {
-                use: 'babel-loader',
+                loader: 'babel-loader',
+                exclude: /node_modules/,
                 test: /\.js$/,
-                exclude: [/node_modules/, /dist/]
+                options: {
+                    presets: [
+                        ['env', { modules: false, targets: { browsers: ['last 2 versions'] } }],
+                        'react'
+                    ],
+                    cacheDirectory: true,
+                    plugins: [
+                        ['import', { libraryName: "antd", style: true }],
+                        'transform-strict-mode',
+                        'transform-object-rest-spread'
+                    ]
+                },
             },
             {
                 test: /\.css$/,
@@ -30,6 +45,21 @@ module.exports = {
             {
                 test: /\.gif$/,
                 use: 'file-loader'
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    { loader: "style-loader" },
+                    { loader: "css-loader" },
+                    {
+                        loader: "less-loader",
+                        options: {
+                            modifyVars: themeVariables,
+                            root: path.resolve(__dirname, './'),
+                            javascriptEnabled: true
+                        }
+                    }
+                ]
             }
         ]
     },
