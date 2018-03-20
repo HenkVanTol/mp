@@ -26,6 +26,12 @@ class AssetMaster extends Component {
         }).then((result) => {
             this.state.hierarchyTypes = result.data.hierarchyType;
         });
+
+        console.log("params id: ", this.props.params.id);
+        //edit existing
+        if (this.props.params.id) {
+
+        }
     }
     onSubmit(event) {
         event.preventDefault();
@@ -130,7 +136,11 @@ class AssetMaster extends Component {
                         </Row>
 
                         <Row>
-                            <Button type="primary" style={{ width: '100%' }} size="large" htmlType="submit" >Submit</Button>
+                            <Col span={8} />
+                            <Col span={8}>
+                                <Button type="primary" style={{ width: '100%' }} size="large" htmlType="submit" >Submit</Button>
+                            </Col>
+                            <Col span={8} />
                             <div className="errors">
                                 {this.state.errors.map(error => <div key={error}>{error}</div>)}
                             </div>

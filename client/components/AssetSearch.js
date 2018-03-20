@@ -4,6 +4,7 @@ import query from '../queries/AssetMaster';
 import { Form, Row, Col, Input, Button, Table } from 'antd';
 const FormItem = Form.Item;
 import FormItemTextInput from './common/FormItemTextInput';
+import {Link} from 'react-router';
 
 class AssetSearch extends Component {
     constructor(props) {
@@ -25,7 +26,22 @@ class AssetSearch extends Component {
             title: 'Registration',
             dataIndex: 'registration',
             key: 'registration',
+        },
+        {
+            render: (text, record) => (
+                <Link to={`/assetMaster/${record.id}`}>Edit</Link>
+            )
         }];
+        this.rowSelection = {
+            onChange: (selectedRowKeys, selectedRows) => {
+                console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+                console.log("selectedRows[0]: ", selectedRows[0]);
+            },
+            getCheckboxProps: record => ({
+                disabled: record.name === 'Disabled', // Column configuration not to be checked
+                name: record.name,
+            }),
+        };
     }
     search() {
         let { name, description, serial, registration } = this.state;
@@ -72,7 +88,7 @@ class AssetSearch extends Component {
                 </Row>
                 <Row>
                     <Col span={16}>
-                        <Table dataSource={this.state.dataSource} columns={this.columns} rowKey={record => record.id} />
+                        <Table rowSelection={this.rowSelection} dataSource={this.state.dataSource} columns={this.columns} rowKey={record => record.id} />
                     </Col>
                 </Row>
             </div>
