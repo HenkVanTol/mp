@@ -9,40 +9,71 @@ import FormItemCombo from './common/FormItemCombo';
 import FormItemLabel from './common/FormItemLabel';
 import FormItemDatePicker from './common/FormItemDatePicker';
 
-import mutation from '../mutations/CreateAssetMaster';
+import create from '../mutations/CreateAssetMaster';
 import hierarchyTypeQuery from '../queries/HierarchyType';
+import findById from '../queries/AssetMasterById';
+import update from '../mutations/UpdateAssetMaster';
 
 class AssetMaster extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            hierarchyTypeId: 0, masterId: 0, classId: 0, name: '',
-            description: '', serial: '', registration: '', acquisitionDate: moment(), retirementDate: moment(), purchasePrice: 0,
-            purchaseOrderNumber: '', creatorId: 0, hierarchyTypes: [], hierarchyTypeId: 0, errors: []
-        };
+
+        console.log("params id: ", this.props.params.id);
+        //edit existing
+        if (this.props.params.id) {
+            this.props.client.query({
+                query: findById,
+                variables: { id: this.props.params.id },
+            }).then((result) => {
+                console.log("findById result: ", result);
+                let asset = result.data.assetMasterById;
+                this.state = {
+                    hierarchyTypeId: asset.hierarchyTypeId, masterId: asset.masterId, classId: asset.classId, name: asset.name,
+                    description: asset.description, serial: asset.serial, registration: asset.registration,
+                    acquisitionDate: moment(asset.acquisitionDate), retirementDate: moment(asset.retirementDate), purchasePrice: asset.purchasePrice,
+                    purchaseOrderNumber: asset.purchaseOrderNumber, creatorId: asset.creatorId, hierarchyTypes: [],
+                    hierarchyTypeId: asset.hierarchyTypeId, errors: [], edit: true
+                };
+                console.log("done");
+            });
+        }
+        //create new
+        else {
+            this.state = {
+                hierarchyTypeId: 0, masterId: 0, classId: 0, name: '',
+                description: '', serial: '', registration: '', acquisitionDate: moment(), retirementDate: moment(), purchasePrice: 0,
+                purchaseOrderNumber: '', creatorId: 0, hierarchyTypes: [], hierarchyTypeId: 0, errors: [], edit: false
+            };
+        }
 
         this.props.client.query({
             query: hierarchyTypeQuery
         }).then((result) => {
             this.state.hierarchyTypes = result.data.hierarchyType;
         });
-
-        console.log("params id: ", this.props.params.id);
-        //edit existing
-        if (this.props.params.id) {
-
-        }
     }
     onSubmit(event) {
         event.preventDefault();
         const { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId } = this.state;
-        this.props.client.mutate({
-            mutation,
-            variables: { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }
-        }).catch(res => {
-            const errors = res.graphQLErrors.map(error => error.message);
-            this.setState({ errors }); //es6: name value is the same
-        });
+        if (this.state.edit == true) {
+            console.log("editing...");
+            this.props.client.mutate({
+                mutation: update,
+                variables: { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }
+            }).catch(res => {
+                const errors = res.graphQLErrors.map(error => error.message);
+                this.setState({ errors }); //es6: name value is the same
+            });
+        }
+        else {
+            this.props.client.mutate({
+                mutation: create,
+                variables: { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }
+            }).catch(res => {
+                const errors = res.graphQLErrors.map(error => error.message);
+                this.setState({ errors }); //es6: name value is the same
+            });
+        }
     }
     renderHierarchyTypes() {
         return (

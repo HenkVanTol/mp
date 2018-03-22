@@ -31,6 +31,16 @@ const RootQueryType = new GraphQLObjectType({
       resolve() {
         return LookupService.getAll();
       }
+    },
+    assetMasterById: {
+      type: AssetMasterType,
+      args: {
+        id: { type: GraphQLInt }
+      },
+      resolve(parentValue, args) {
+        console.log("args.id: ", args.id);
+        return AssetMasterService.findById(args.id);
+      }
     }
     // customer: {
     //   args: {

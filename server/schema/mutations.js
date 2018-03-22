@@ -58,6 +58,21 @@ const mutation = new GraphQLObjectType({
             resolve(parentValue, { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }) {
                 return AssetMasterService.create({ name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId });
             }
+        },
+        updateAssetMaster: {
+            type: AssetMasterType,
+            args: {
+                name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                serial: { type: GraphQLString },
+                registration: { type: GraphQLString },
+                acquisitionDate: { type: GraphQLDate },
+                retirementDate: { type: GraphQLDate },
+                hierarchyTypeId: { type: GraphQLInt }
+            },
+            resolve(parentValue, { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }) {
+                return AssetMasterService.update({ name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId });
+            }
         }
         // editCustomer: {
         //     type: CustomerType,
