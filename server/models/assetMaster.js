@@ -43,12 +43,12 @@ function create(assetMaster) {
 function update(assetMaster) {
     return new Promise((resolve, reject) => {
         let values = [assetMaster.name, assetMaster.description, assetMaster.serial,
-        assetMaster.registration, assetMaster.acquisitionDate, assetMaster.retirementDate, assetMaster.hierarchyTypeId];
+        assetMaster.registration, assetMaster.acquisitionDate, assetMaster.retirementDate, assetMaster.hierarchyTypeId, assetMaster.id];
         console.log("values for update: ", values);
         db.get().query("update assetMaster set name = ?, description = ?, serial = ?, registration = ?, acquisitionDate = ?, retirementDate = ?, hierarchyTypeId = ? where id = ?", values, function (err, result) {
-            if (err) return reject(err);
+            if (err) reject(err);
             resolve({
-                id: result.id,
+                id: assetMaster.id,
                 name: assetMaster.email,
                 description: assetMaster.password,
                 serial: assetMaster.serial,

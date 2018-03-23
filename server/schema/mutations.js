@@ -62,6 +62,7 @@ const mutation = new GraphQLObjectType({
         updateAssetMaster: {
             type: AssetMasterType,
             args: {
+                id: { type: GraphQLInt },
                 name: { type: GraphQLString },
                 description: { type: GraphQLString },
                 serial: { type: GraphQLString },
@@ -70,24 +71,10 @@ const mutation = new GraphQLObjectType({
                 retirementDate: { type: GraphQLDate },
                 hierarchyTypeId: { type: GraphQLInt }
             },
-            resolve(parentValue, { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }) {
-                return AssetMasterService.update({ name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId });
+            resolve(parentValue, { id, name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }) {
+                return AssetMasterService.update({ id, name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId });
             }
         }
-        // editCustomer: {
-        //     type: CustomerType,
-        //     args: {
-        //         id: { type: GraphQLInt },
-        //         name: { type: GraphQLString },
-        //         surname: { type: GraphQLString },
-        //         email: { type: GraphQLString },
-        //         purchases: { type: GraphQLInt }
-        //     },
-        //     resolve(parentValue, { id, name, surname, email, purchases }) {
-        //         console.log("resolver for customer")
-        //         return CustomerService.editCustomer({ id, name, surname, email, purchases });
-        //     }
-        // }
     }
 });
 

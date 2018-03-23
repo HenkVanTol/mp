@@ -18,6 +18,12 @@ class AssetMaster extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            hierarchyTypeId: 0, masterId: 0, classId: 0, name: '',
+            description: '', serial: '', registration: '', acquisitionDate: moment(), retirementDate: moment(), purchasePrice: 0,
+            purchaseOrderNumber: '', creatorId: 0, hierarchyTypes: [], hierarchyTypeId: 0, errors: [], edit: false
+        };
+
         console.log("params id: ", this.props.params.id);
         //edit existing
         if (this.props.params.id) {
@@ -27,23 +33,17 @@ class AssetMaster extends Component {
             }).then((result) => {
                 console.log("findById result: ", result);
                 let asset = result.data.assetMasterById;
-                this.state = {
-                    hierarchyTypeId: asset.hierarchyTypeId, masterId: asset.masterId, classId: asset.classId, name: asset.name,
-                    description: asset.description, serial: asset.serial, registration: asset.registration,
-                    acquisitionDate: moment(asset.acquisitionDate), retirementDate: moment(asset.retirementDate), purchasePrice: asset.purchasePrice,
-                    purchaseOrderNumber: asset.purchaseOrderNumber, creatorId: asset.creatorId, hierarchyTypes: [],
-                    hierarchyTypeId: asset.hierarchyTypeId, errors: [], edit: true
-                };
+                if (asset) {
+                    console.log("promise resolved");
+                    this.state = {
+                        id: asset.id, masterId: asset.masterId, classId: asset.classId, name: asset.name,
+                        description: asset.description, serial: asset.serial, registration: asset.registration,
+                        acquisitionDate: moment(asset.acquisitionDate), retirementDate: moment(asset.retirementDate), purchasePrice: asset.purchasePrice,
+                        purchaseOrderNumber: asset.purchaseOrderNumber, creatorId: asset.creatorId, errors: [], edit: true
+                    };
+                }
                 console.log("done");
             });
-        }
-        //create new
-        else {
-            this.state = {
-                hierarchyTypeId: 0, masterId: 0, classId: 0, name: '',
-                description: '', serial: '', registration: '', acquisitionDate: moment(), retirementDate: moment(), purchasePrice: 0,
-                purchaseOrderNumber: '', creatorId: 0, hierarchyTypes: [], hierarchyTypeId: 0, errors: [], edit: false
-            };
         }
 
         this.props.client.query({
@@ -54,12 +54,12 @@ class AssetMaster extends Component {
     }
     onSubmit(event) {
         event.preventDefault();
-        const { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId } = this.state;
+        const { id, name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId } = this.state;
         if (this.state.edit == true) {
             console.log("editing...");
             this.props.client.mutate({
                 mutation: update,
-                variables: { name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }
+                variables: { id, name, description, serial, registration, acquisitionDate, retirementDate, hierarchyTypeId }
             }).catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
                 this.setState({ errors }); //es6: name value is the same
@@ -96,8 +96,13 @@ class AssetMaster extends Component {
                         <Row>
                             <FormItemLabel value="Hierarchy Type: " />
                             <Col span={1} />
-                            <FormItemCombo value={this.state.hierarchyTypeId} onChange={(value) => this.setState({ hierarchyTypeId: value })}
-                                renderOptions={this.renderHierarchyTypes.bind(this)} />
+                            {/* <FormItemCombo value={this.state.hierarchyTypeId} onChange={(value) => this.setState({ hierarchyTypeId: value })}
+                                renderOptions={this.renderHierarchyTypes.bind(this)} /> */}
+                            <Col lg={6} sm={3}>
+                                <FormItem>
+                                    <Select style={{ width: 200 }} />
+                                </FormItem>
+                            </Col>
                             <Col span={1} />
                             <FormItemLabel value="Master: " />
                             <Col span={1} />

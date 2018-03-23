@@ -1,9 +1,9 @@
 import gql from 'graphql-tag';
 
 export default gql`
-mutation updateAssetMaster($name:String, $description:String, $serial:String, 
+mutation updateAssetMaster($id:Int, $name:String, $description:String, $serial:String, 
   $registration:String, $acquisitionDate: Date, $retirementDate: Date, $hierarchyTypeId: Int) {
-  updateAssetMaster(name:$name, description:$description, serial:$serial, registration:$registration, 
+  updateAssetMaster(id: $id, name:$name, description:$description, serial:$serial, registration:$registration, 
     acquisitionDate: $acquisitionDate, retirementDate: $retirementDate, hierarchyTypeId: $hierarchyTypeId) {
       name, 
       description, 
