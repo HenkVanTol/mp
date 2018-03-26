@@ -49,6 +49,7 @@ class AssetMaster extends Component {
         this.props.client.query({
             query: hierarchyTypeQuery
         }).then((result) => {
+            console.log("loaded hierarchy types");
             this.state.hierarchyTypes = result.data.hierarchyType;
         });
     }

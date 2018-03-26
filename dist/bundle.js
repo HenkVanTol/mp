@@ -45786,6 +45786,7 @@ var AssetMaster = function (_Component) {
         _this.props.client.query({
             query: _HierarchyType2.default
         }).then(function (result) {
+            console.log("loaded hierarchy types");
             _this.state.hierarchyTypes = result.data.hierarchyType;
         });
         return _this;
