@@ -4,7 +4,7 @@ const session = require('express-session');
 const passport = require('passport');
 const passportConfig = require('./services/auth');
 const schema = require('./schema/schema');
-const MySQLStore = require('express-mysql-session')(session);
+const MSSQLStore = require('mssql-session-store')(session);
 const db = require('./db');
 const authService = require('./services/auth');
 //const flash = require('connect-flash');
@@ -12,45 +12,49 @@ const authService = require('./services/auth');
 // Create a new Express application
 const app = express();
 
-//MySQL connection settings
+//MSSQL connection settings
 const options = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'Mechanics!',
-  database: 'assetid'
+  user: 'sa',
+  password: '',
+  server: '', // You can use 'localhost\\instance' to connect to named instance
+  database: 'MultiPick',
+  // options: {
+  //     encrypt: true // Use this if you're on Windows Azure
+  // }
 };
 
-db.connect(options, function (err) {
-  if (err) {
-    console.log('UNABLE TO CONNECT TO MYSQL: ', err);
-    process.exit(1);
-  }
-  else {
-    console.log('MYSQL CONNECTION POOL CREATED.');
-  }
-});
+let sessionOptions = {};
 
-//MySQL session store for cookies
-const mySQLSessionStore = new MySQLStore(options);
-
-// Configures express to use sessions.  This places an encrypted identifier
-// on the users cookie.  When a user makes a request, this middleware examines
-// the cookie and modifies the request object to indicate which user made the request
-// The cookie itself only contains the id of a session; more data about the session
-// is stored inside of MySQL.
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: 'aaabbbccc',
-  store: mySQLSessionStore
-}));
+db.connect(options)
+  .then(pool => {
+    console.log("MSSQL CONNECTION POOL CREATED.");
+    // sessionOptions = {
+    //   ttl: 3600,
+    //   reapInterval: 3600,
+    //   reapCallback: function () { console.log('expired sessions were removed'); }
+    // };
+    // const msSQLSessionStore = new MSSQLStore(sessionOptions);
+    // // Configures express to use sessions.  This places an encrypted identifier
+    // // on the users cookie.  When a user makes a request, this middleware examines
+    // // the cookie and modifies the request object to indicate which user made the request
+    // // The cookie itself only contains the id of a session; more data about the session
+    // // is stored inside of MSSQL.
+    // app.use(session({
+    //   resave: true,
+    //   saveUninitialized: true,
+    //   secret: 'aaabbbccc',
+    //   store: msSQLSessionStore
+    // }));
+  })
+  .catch(error => {
+    console.log("UNABLE TO CONNECT TO MSSQL: ", error);
+  });
 
 // Passport is wired into express as a middleware. When a request comes in,
 // Passport will examine the request's session (as set by the above config) and
 // assign the current user to the 'req.user' object.  See also servces/auth.js
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Instruct Express to pass on any request made to the '/graphql' route
 // to the GraphQL instance.

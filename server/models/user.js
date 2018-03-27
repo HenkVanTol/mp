@@ -4,7 +4,7 @@ const db = require('../db');
 
 function findById(id) {
     return new Promise(function (resolve, reject) {
-        db.get().query('select * from user where id = ?', id, function (err, rows) {
+        db.get().request().query('select * from user where id = ?', id, function (err, rows) {
             if (err) return reject(err);
             resolve(rows[0]);
         });
@@ -13,7 +13,7 @@ function findById(id) {
 
 function findByEmail(email) {
     return new Promise(function (resolve, reject) {
-        db.get().query('select * from user where email = ?', email, function (err, rows) {
+        db.get().request().query('select * from user where email = ?', email, function (err, rows) {
             if (err) return reject(err);
             resolve(rows[0]);
         });
@@ -28,7 +28,7 @@ function insert(user, done) {
             if (err) { return next(err); }
             user.password = hash;
             let values = [user.email, user.password];
-            db.get().query("insert into user (email, password) values (?)", [values], function (err, result) {
+            db.get().request().query("insert into user (email, password) values (?)", [values], function (err, result) {
                 if (err) return done(err);
                 done(null, {
                     id: result.insertId,
@@ -58,7 +58,7 @@ function create(user) {
 //Fix queries
 function update(user) {
     let sql = "select * from user where id = " + user.id;
-    let existing = db.get().query(sql, function (err, result) {
+    let existing = db.get().request().query(sql, function (err, result) {
         if (err) throw err;
         //check if password has changed - salt and hash if it did
         if (result) {
@@ -72,7 +72,7 @@ function update(user) {
                 });
             }
             let updateSql = "update user set email = '" + user.email + "', password = '" + user.password + "' where id = " + user.id;
-            db.get().query(sql, function (err, result) {
+            db.get().request().query(sql, function (err, result) {
                 if (err) throw err;
                 if (result) {
                     console.log(result.affectedRows + " user record(s) updated");
