@@ -1,15 +1,5 @@
 const mssql = require('mssql');
 
-const config = {
-    user: 'sa',
-    password: 'Kc1p1tlum',
-    server: '192.168.25.181', // You can use 'localhost\\instance' to connect to named instance
-    database: 'MultiPick',
-    // options: {
-    //     encrypt: true // Use this if you're on Windows Azure
-    // }
-}
-
 var state = {
     pool: null
 };
