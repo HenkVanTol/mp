@@ -9,7 +9,9 @@ const {
 
 const UserType = require('./types/user_type');
 const AssetMasterType = require('./types/asset_master_type');
+const InvoiceSearchType = require('./types/invoiceSearch_type');
 const AuthService = require('../services/auth');
+const InvoiceService = require('../services/invoice');
 const AssetMasterService = require('../services/assetMaster');
 const GraphQLDate = require('graphql-date');
 
@@ -42,6 +44,19 @@ const mutation = new GraphQLObjectType({
             },
             resolve(parentValue, { email, password }, req) {
                 return AuthService.login({ email, password, req });
+            }
+        },
+        CreateInvoice: {
+            type: InvoiceSearchType,
+            args: {
+                InvoiceNumber: { type: GraphQLString },
+                ContractID: { type: GraphQLInt },
+                StatusID: { type: GraphQLInt },
+                DateRaised: { type: GraphQLDate },
+                Value: { type: GraphQLFloat }
+            },
+            resolve(parentValue, { InvoiceNumber, ContractID, StatusID, DateRaised, Value }) {
+                return InvoiceService.CreateInvoice({ InvoiceNumber, ContractID, StatusID, DateRaised, Value });
             }
         },
         createAssetMaster: {

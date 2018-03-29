@@ -7,7 +7,7 @@ class FormItemTextInput extends Component {
         return (
             <Col lg={6} sm={3}>
                 <FormItem>
-                    <Input style={{ width: 200 }} value={this.props.value} onChange={this.props.onChange} />
+                    <Input value={this.props.value} onChange={this.props.onChange} />
                 </FormItem>
             </Col>
         );

@@ -40,11 +40,11 @@ class SideMenu extends Component {
                     <Menu.Item key="home">
                         <Link to="/">Home</Link>
                     </Menu.Item>
-                    <Menu.Item key="assetMaster">
-                        <Link to="/assetMaster">Create</Link>
+                    <Menu.Item key="invoice">
+                        <Link to="/invoice">Create</Link>
                     </Menu.Item>
-                    <Menu.Item key="assetSearch">
-                        <Link to="/assetSearch">Search</Link>
+                    <Menu.Item key="invoiceSearch">
+                        <Link to="/invoiceSearch">Search</Link>
                     </Menu.Item>
                 </Menu>
             </Sider>

@@ -6,7 +6,7 @@ class FormItemDatePicker extends Component {
     render() {
         return (
             <Col lg={6} sm={3}>
-                <DatePicker style={{ width: 200 }} value={this.props.value} onChange={this.props.onChange} />
+                <DatePicker value={this.props.value} onChange={this.props.onChange} />
             </Col>
         );
     }
