@@ -36,6 +36,26 @@ function CreateInvoice(Invoice) {
     });
 }
 
+function UpdateInvoice(Invoice) {
+    return new Promise(function (resolve, reject) {
+        console.log("in update");
+        console.log("Invoice: ", Invoice);
+        db.get().request()
+            .input("InvoiceID", sql.Int, Invoice.InvoiceID)
+            .input("InvoiceNumber", sql.VarChar(100), Invoice.InvoiceNumber)
+            .input("ContractID", sql.Int, Invoice.ContractID)
+            .input("StatusID", sql.Int, Invoice.StatusID)
+            .input("DateRaised", sql.DateTime, Invoice.DateRaised)
+            .input("Value", sql.Decimal(18, 5), Invoice.Value)
+            .query("update ServiceBasedBilling.Invoice set InvoiceNumber = @InvoiceNumber, ContractHeaderID = @ContractID, InvoiceStatusID = @StatusID, DateRaised = @DateRaised, Value = @Value where InvoiceID = @InvoiceID")
+            .then(result => resolve(result.recordset))
+            .catch(error => {
+                console.log("error: ", error);
+                reject(error)
+            });
+    });
+}
+
 function InvoiceStatuses() {
     return new Promise(function (resolve, reject) {
         db.get().request()
@@ -45,4 +65,4 @@ function InvoiceStatuses() {
     });
 }
 
-module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses };
+module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses, UpdateInvoice };

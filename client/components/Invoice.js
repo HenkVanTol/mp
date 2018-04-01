@@ -4,16 +4,17 @@ import moment from 'moment';
 import { Form, Row, Col, Input, Button, DatePicker, Select } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
+import swal from 'sweetalert2'
+
 import FormItemTextInput from './common/FormItemTextInput';
 import FormItemCombo from './common/FormItemCombo';
 import FormItemLabel from './common/FormItemLabel';
 import FormItemDatePicker from './common/FormItemDatePicker';
 
 import create from '../mutations/CreateInvoice';
-//import hierarchyTypeQuery from '../queries/HierarchyType';
 import findById from '../queries/InvoiceByID';
 import invoiceStatuses from '../queries/InvoiceStatuses';
-//import update from '../mutations/UpdateInvoice';
+import update from '../mutations/UpdateInvoice';
 
 class Invoice extends Component {
     constructor(props) {
@@ -51,13 +52,23 @@ class Invoice extends Component {
     }
     onSubmit(event) {
         event.preventDefault();
-        const { InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
+        const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
         if (this.state.edit == true) {
             console.log("editing...");
             this.props.client.mutate({
                 mutation: update,
-                variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            }).catch(res => {
+                variables: { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }
+            })
+            .then(() => {
+                swal({
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Invoice updated',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+            })
+            .catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
                 this.setState({ errors }); //es6: name value is the same
             });
@@ -66,7 +77,17 @@ class Invoice extends Component {
             this.props.client.mutate({
                 mutation: create,
                 variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            }).catch(res => {
+            })
+            .then(() => {
+                swal({
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Invoice created',
+                    showConfirmButton: false,
+                    timer: 1500
+                  })
+            })
+            .catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
                 this.setState({ errors }); //es6: name value is the same
             });

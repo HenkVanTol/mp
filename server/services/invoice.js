@@ -24,6 +24,14 @@ function CreateInvoice(Invoice) {
     });
 }
 
+function UpdateInvoice(Invoice) {
+    return new Promise((resolve, reject) => {
+        InvoiceModel.UpdateInvoice(Invoice)
+            .then(result => resolve(result))
+            .catch(error => reject(err));
+    });
+}
+
 function InvoiceStatuses() {
     return new Promise((resolve, reject) => {
         InvoiceModel.InvoiceStatuses()
@@ -32,4 +40,4 @@ function InvoiceStatuses() {
     });
 }
 
-module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses };
+module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses, UpdateInvoice };

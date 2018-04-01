@@ -59,6 +59,21 @@ const mutation = new GraphQLObjectType({
                 return InvoiceService.CreateInvoice({ InvoiceNumber, ContractID, StatusID, DateRaised, Value });
             }
         },
+        UpdateInvoice: {
+            type: InvoiceSearchType,
+            args: {
+                InvoiceID: { type: GraphQLInt },
+                InvoiceNumber: { type: GraphQLString },
+                ContractID: { type: GraphQLInt },
+                StatusID: { type: GraphQLInt },
+                DateRaised: { type: GraphQLDate },
+                Value: { type: GraphQLFloat }
+            },
+            resolve(parentValue, { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }) {
+                return InvoiceService.UpdateInvoice({ InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value })
+                .catch(error => console.log("error: ", error));
+            }
+        },
         createAssetMaster: {
             type: AssetMasterType,
             args: {
