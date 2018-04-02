@@ -13,7 +13,6 @@ import FormItemDatePicker from './common/FormItemDatePicker';
 
 import create from '../mutations/CreateInvoice';
 import findById from '../queries/InvoiceByID';
-import invoiceStatuses from '../queries/InvoiceStatuses';
 import update from '../mutations/UpdateInvoice';
 
 class Invoice extends Component {
@@ -24,81 +23,92 @@ class Invoice extends Component {
             InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
             StatusDescription: null, Value: null, DateRaised: moment(), errors: [], edit: false, InvoiceStatuses: []
         };
-
-        console.log("params id: ", this.props.params.id);
+    }
+    componentDidMount() {
         //edit existing
         if (this.props.params.id) {
             this.props.client.query({
                 query: findById,
                 variables: { InvoiceID: this.props.params.id },
+                options: {
+                    fetchPolicy: 'network-only'
+                }
             }).then((result) => {
-                console.log("InvoiceByID result: ", result);
+                console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
                 let invoice = result.data.InvoiceByID[0];
                 if (invoice) {
-                    this.state = {
-                        InvoiceID: invoice.InvoiceID, InvoiceNumber: invoice.InvoiceNumber, ContractID: invoice.ContractID,
-                        ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
-                        StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: moment(invoice.DateRaised),
-                        errors: [], edit: true
-                    };
+                    this.mapState(invoice);
                 }
             });
         }
-        this.props.client.query({
-            query: invoiceStatuses
-        }).then((result) => {
-            this.state.InvoiceStatuses = result.data.InvoiceStatuses;
-        });
+    }
+    mapState(invoice) {
+        this.setState({
+            InvoiceID: invoice.InvoiceID, InvoiceNumber: invoice.InvoiceNumber, ContractID: invoice.ContractID,
+            ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
+            StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: moment(invoice.DateRaised),
+            errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses
+        }, () => console.log("setState done"), () => console.log("setState error"));
     }
     onSubmit(event) {
         event.preventDefault();
         const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
         if (this.state.edit == true) {
-            console.log("editing...");
             this.props.client.mutate({
                 mutation: update,
                 variables: { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            })
-            .then(() => {
-                swal({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Invoice updated',
-                    showConfirmButton: false,
-                    timer: 1500
-                  })
-            })
-            .catch(res => {
+            }).then(() => {
+                // this.props.client.query({
+                //     query: findById,
+                //     variables: { InvoiceID: this.props.params.id },
+                //     options: {
+                //         fetchPolicy: 'network-only'
+                //     }
+                // }).then((result) => {
+                //     console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
+                //     let invoice = result.data.InvoiceByID[0];
+                //     if (invoice) {
+                //         this.mapState(invoice);
+                //     }
+                    swal({
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Invoice updated',
+                        showConfirmButton: false,
+                        timer: 1000
+                    });
+                // });
+            }).catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
-                this.setState({ errors }); //es6: name value is the same
+                this.setState({ errors });
             });
         }
         else {
             this.props.client.mutate({
                 mutation: create,
                 variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            })
-            .then(() => {
+            }).then(() => {
                 swal({
                     position: 'top-end',
                     type: 'success',
                     title: 'Invoice created',
                     showConfirmButton: false,
-                    timer: 1500
-                  })
-            })
-            .catch(res => {
+                    timer: 1000
+                })
+            }).catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
-                this.setState({ errors }); //es6: name value is the same
+                this.setState({ errors });
             });
         }
     }
     renderInvoiceStatuses() {
-        return (
-            this.state.InvoiceStatuses.map(status => {
-                return <Option key={status.InvoiceStatusID} value={status.InvoiceStatusID}>{status.Ref}</Option>;
-            })
-        );
+        if (!this.props.data.loading) {
+            return (
+                this.state.InvoiceStatuses.map(status => {
+                    return <Option key={status.InvoiceStatusID} value={status.InvoiceStatusID}>{status.Ref}</Option>;
+                })
+            );
+        }
     }
     render() {
         if (this.props.data.loading) {
@@ -169,5 +179,7 @@ class Invoice extends Component {
         }
     }
 }
-
+// export default graphql(findById, {
+//     options: (props) => { return { variables: { id: props.params.id } } }
+// })(Invoice);
 export default withApollo(Invoice);

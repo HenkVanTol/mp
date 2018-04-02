@@ -1,8 +1,10 @@
 - edit invoice
 - can sign up multiple times
-- load dropdowns reliably (chain promise)
+- load dropdowns reliably (chain promise) - done
 - check for single graphql call: lookups plus result in one call
 - break sql statements into multiple lines
 - edit not refreshing
 - ssl
 - alert when persisted - done
+- responsive for more sizes
+- date format in grid

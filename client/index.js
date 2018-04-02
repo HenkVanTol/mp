@@ -12,7 +12,16 @@ import Invoice from './components/Invoice';
 import requireAuth from './components/requireAuth';
 
 import { DatePicker } from 'antd';
-
+const defaultOptions = {
+    watchQuery: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'ignore',
+    },
+    query: {
+      fetchPolicy: 'network-only',
+      errorPolicy: 'all',
+    },
+  }
 const networkInterface = createNetworkInterface({
     uri: '/graphql',
     opts: {
@@ -22,7 +31,8 @@ const networkInterface = createNetworkInterface({
   
   const client = new ApolloClient({
     networkInterface,
-    dataIdFromObject: o => o.id
+    dataIdFromObject: o => o.id,
+    defaultOptions: defaultOptions
   });
 
 const Root = () => {

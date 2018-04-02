@@ -48,7 +48,10 @@ class InvoiceSearch extends Component {
         let { InvoiceNumber, StatusID } = this.state;
         this.props.client.query({
             query,
-            variables: { InvoiceNumber, StatusID }
+            variables: { InvoiceNumber, StatusID },
+            options: {
+              fetchPolicy: 'network-only'
+            }
         }).then((result) => {
             console.log("result.data: ", result.data.InvoiceSearch);
             this.setState({ dataSource: result.data.InvoiceSearch });

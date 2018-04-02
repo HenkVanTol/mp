@@ -27,7 +27,9 @@ function CreateInvoice(Invoice) {
 function UpdateInvoice(Invoice) {
     return new Promise((resolve, reject) => {
         InvoiceModel.UpdateInvoice(Invoice)
-            .then(result => resolve(result))
+            .then((result) => {
+                resolve(result);
+            })
             .catch(error => reject(err));
     });
 }

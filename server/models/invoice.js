@@ -7,7 +7,10 @@ function InvoiceSearch(InvoiceNumber, StatusID) {
             .input("InvoiceNumber", sql.VarChar(100), InvoiceNumber)
             .input("StatusID", sql.Int, StatusID)
             .execute("ServiceBasedBilling._InvoiceSearch")
-            .then(result => resolve(result.recordset))
+            .then((result) => {
+                console.log("result from invoice search: ", result.recordset);
+                resolve(result.recordset);
+            })
             .catch(error => reject(error));
     });
 }

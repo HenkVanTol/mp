@@ -4,7 +4,7 @@ import SideMenu from './SideMenu';
 import { Layout, Menu, Breadcrumb, Icon, Avatar, Card } from 'antd';
 const { SubMenu } = Menu;
 const { Header, Content, Sider, Footer } = Layout;
-import imageName from './saflag.gif';
+//import imageName from './saflag.gif';
 
 const App = (props) => {
     return (
