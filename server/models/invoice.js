@@ -8,7 +8,6 @@ function InvoiceSearch(InvoiceNumber, StatusID) {
             .input("StatusID", sql.Int, StatusID)
             .execute("ServiceBasedBilling._InvoiceSearch")
             .then((result) => {
-                console.log("result from invoice search: ", result.recordset);
                 resolve(result.recordset);
             })
             .catch(error => reject(error));

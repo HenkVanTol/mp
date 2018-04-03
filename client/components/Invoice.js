@@ -75,6 +75,9 @@ class Invoice extends Component {
                         type: 'success',
                         title: 'Invoice updated',
                         showConfirmButton: false,
+                        animation: false,
+                        imageWidth: 100,
+                        imageHeight: 50,
                         timer: 1000
                     });
                 // });
@@ -92,8 +95,11 @@ class Invoice extends Component {
                     position: 'top-end',
                     type: 'success',
                     title: 'Invoice created',
-                    showConfirmButton: false,
-                    timer: 1000
+                    showConfirmButton: false,  
+                    imageWidth: 100,
+                    imageHeight: 50,
+                    timer: 1000,
+                    animation: false
                 })
             }).catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
