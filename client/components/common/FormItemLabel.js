@@ -5,7 +5,7 @@ const FormItem = Form.Item;
 class FormItemLabel extends Component {
     render() {
         return (
-            <Col lg={4} sm={2}>
+            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                 <FormItem>
                     <label>{this.props.value}</label>
                 </FormItem>

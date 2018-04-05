@@ -5,9 +5,9 @@ const FormItem = Form.Item;
 class FormItemTextInput extends Component {
     render() {
         return (
-            <Col lg={6} sm={3}>
+            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                 <FormItem>
-                    <Select style={{ width: 200 }} value={this.props.value} onChange={this.props.onChange} >
+                    <Select value={this.props.value} onChange={this.props.onChange} >
                         {this.props.renderOptions()}
                     </Select>
                 </FormItem>

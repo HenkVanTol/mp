@@ -5,8 +5,10 @@ const FormItem = Form.Item;
 class FormItemDatePicker extends Component {
     render() {
         return (
-            <Col lg={6} sm={3}>
-                <DatePicker value={this.props.value} onChange={this.props.onChange} />
+            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                <FormItem>
+                    <DatePicker value={this.props.value} onChange={this.props.onChange} />
+                </FormItem>
             </Col>
         );
     }

@@ -67,4 +67,13 @@ function InvoiceStatuses() {
     });
 }
 
-module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses, UpdateInvoice };
+function Contracts() {
+    return new Promise(function (resolve, reject) {
+        db.get().request()
+            .query("select ContractHeaderID as ContractID, Ref from ServiceBasedBilling.ContractHeader order by Ref")
+            .then(result => resolve(result.recordset))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses, UpdateInvoice, Contracts };

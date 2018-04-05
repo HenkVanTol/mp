@@ -9,6 +9,7 @@ import swal from 'sweetalert2'
 import FormItemTextInput from './common/FormItemTextInput';
 import FormItemCombo from './common/FormItemCombo';
 import FormItemLabel from './common/FormItemLabel';
+import FormItemLabelBold from './common/FormItemLabelBold';
 import FormItemDatePicker from './common/FormItemDatePicker';
 
 import create from '../mutations/CreateInvoice';
@@ -21,7 +22,7 @@ class Invoice extends Component {
 
         this.state = {
             InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
-            StatusDescription: null, Value: null, DateRaised: moment(), errors: [], edit: false, InvoiceStatuses: []
+            StatusDescription: null, Value: null, DateRaised: moment(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
         };
     }
     componentDidMount() {
@@ -47,7 +48,7 @@ class Invoice extends Component {
             InvoiceID: invoice.InvoiceID, InvoiceNumber: invoice.InvoiceNumber, ContractID: invoice.ContractID,
             ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
             StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: moment(invoice.DateRaised),
-            errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses
+            errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
         }, () => console.log("setState done"), () => console.log("setState error"));
     }
     onSubmit(event) {
@@ -70,16 +71,16 @@ class Invoice extends Component {
                 //     if (invoice) {
                 //         this.mapState(invoice);
                 //     }
-                    swal({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Invoice updated',
-                        showConfirmButton: false,
-                        animation: false,
-                        imageWidth: 100,
-                        imageHeight: 50,
-                        timer: 1000
-                    });
+                swal({
+                    position: 'top-end',
+                    type: 'success',
+                    title: 'Invoice updated',
+                    showConfirmButton: false,
+                    animation: false,
+                    imageWidth: 100,
+                    imageHeight: 50,
+                    timer: 1000
+                });
                 // });
             }).catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
@@ -95,7 +96,7 @@ class Invoice extends Component {
                     position: 'top-end',
                     type: 'success',
                     title: 'Invoice created',
-                    showConfirmButton: false,  
+                    showConfirmButton: false,
                     imageWidth: 100,
                     imageHeight: 50,
                     timer: 1000,
@@ -116,6 +117,15 @@ class Invoice extends Component {
             );
         }
     }
+    renderContracts() {
+        if (!this.props.data.loading) {
+            return (
+                this.state.Contracts.map(contract => {
+                    return <Option key={contract.ContractID} value={contract.ContractID}>{contract.Ref}</Option>;
+                })
+            );
+        }
+    }
     render() {
         if (this.props.data.loading) {
             return (
@@ -125,51 +135,42 @@ class Invoice extends Component {
         else {
             return (
                 <div>
-                    Invoice
+                    <h2>Edit Invoice</h2>
                     <Form layout="inline" onSubmit={this.onSubmit.bind(this)}>
-                        <Row>
+                        <Row gutter={16}>
                             <FormItemLabel value="Invoice Number: " />
-                            <Col span={1} />
-                            <FormItemTextInput value={this.state.InvoiceNumber} onChange={e => this.setState({ InvoiceNumber: e.target.value })} />
-                            <Col span={1} />
-                            <FormItemLabel value="Contract ID: " />
-                            <Col span={1} />
-                            <FormItemTextInput value={this.state.ContractID} onChange={e => this.setState({ ContractID: e.target.value })} />
-                            <Col span={1} />
+                            {/* <FormItemTextInput value={this.state.InvoiceNumber} onChange={e => this.setState({ InvoiceNumber: e.target.value })} /> */}
+                            <FormItemLabelBold value={this.state.InvoiceNumber} />
+                            <FormItemLabel value="Contract: " />
+                            {/* <FormItemTextInput value={this.state.ContractID} onChange={e => this.setState({ ContractID: e.target.value })} /> */}
+                            <FormItemCombo value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })}
+                                renderOptions={this.renderContracts.bind(this)} />
                         </Row>
 
-                        <Row>
+                        <Row gutter={16}>
                             <FormItemLabel value="Contract Description: " />
-                            <Col span={1} />
-                            <FormItemTextInput value={this.state.ContractDescription} onChange={e => this.setState({ ContractDescription: e.target.value })} />
-                            <Col span={1} />
+                            {/* <FormItemTextInput value={this.state.ContractDescription} onChange={e => this.setState({ ContractDescription: e.target.value })} /> */}
+                            <FormItemLabelBold value={this.state.ContractDescription} />
                             <FormItemLabel value="Status ID: " />
-                            <Col span={1} />
                             <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
                                 renderOptions={this.renderInvoiceStatuses.bind(this)} />
-                            <Col span={1} />
                         </Row>
 
-                        <Row>
-                            <FormItemLabel value="Status Description: " />
-                            <Col span={1} />
-                            <FormItemTextInput value={this.state.StatusDescription} onChange={e => this.setState({ StatusDescription: e.target.value })} />
-                            <Col span={1} />
+                        <Row gutter={16}>
+                            <FormItemLabel value="Current Status: " />
+                            {/* <FormItemTextInput value={this.state.StatusDescription} onChange={e => this.setState({ StatusDescription: e.target.value })} /> */}
+                            <FormItemLabelBold value={this.state.StatusDescription} />
                             <FormItemLabel value="Value: " />
-                            <Col span={1} />
                             <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} />
-                            <Col span={1} />
                         </Row>
 
-                        <Row>
+                        <Row gutter={16}>
                             <FormItemLabel value="Date Raised: " />
-                            <Col span={1} />
                             <FormItemDatePicker value={this.state.DateRaised}
-                                onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
-                            <Col span={1} />
+                                handleChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
                         </Row>
 
-                        <Row>
+                        <Row gutter={16}>
                             <Col span={8} />
                             <Col span={8}>
                                 <Button type="primary" style={{ width: '100%' }} size="large" htmlType="submit" >Submit</Button>

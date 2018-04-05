@@ -42,4 +42,12 @@ function InvoiceStatuses() {
     });
 }
 
-module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses, UpdateInvoice };
+function Contracts() {
+    return new Promise((resolve, reject) => {
+        InvoiceModel.Contracts()
+            .then(result => resolve(result))
+            .catch(error => reject(error));
+    });
+}
+
+module.exports = { InvoiceSearch, InvoiceByID, CreateInvoice, InvoiceStatuses, UpdateInvoice, Contracts };

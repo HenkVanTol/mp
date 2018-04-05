@@ -1,5 +1,6 @@
 const graphql = require('graphql');
 const InvoiceStatusesType = require('./invoiceStatuses_type');
+const ContractsType = require('./contracts_type');
 const InvoiceService = require('../../services/invoice');
 
 const {
@@ -27,6 +28,13 @@ const InvoiceSearchType = new GraphQLObjectType({
             type: new GraphQLList(InvoiceStatusesType),
             resolve() {
                 return InvoiceService.InvoiceStatuses();
+            }
+        },
+        Contracts: {
+            type: new GraphQLList(ContractsType),
+            resolve() {
+                console.log("trying to resolve contracts");
+                return InvoiceService.Contracts();
             }
         }
     }

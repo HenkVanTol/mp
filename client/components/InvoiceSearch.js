@@ -60,29 +60,25 @@ class InvoiceSearch extends Component {
     render() {
         return (
             <div>
-                <Row>
+                <Row gutter={16}>
                     <FormItemLabel value="Invoice Number: " />
-                    <Col span={1} />
                     <FormItemTextInput value={this.state.InvoiceNumber} onChange={e => this.setState({ InvoiceNumber: e.target.value })} />
-                    <Col span={1} />
                 </Row>
-                <Row>
+                <Row gutter={16}>
                     <FormItemLabel value="Status: " />
-                    <Col span={1} />
                     <FormItemTextInput value={this.state.StatusID} onChange={e => this.setState({ StatusID: e.target.value })} />
-                    <Col span={1} />
                 </Row>
-                <Row>
-                    <Col span={4} >
-                        <Button type="primary" style={{ width: '100%' }} size="large" onClick={() => this.search()}>Search</Button>
+                <Row gutter={16}>
+                    <Col>
+                        <Button type="primary" style={{ width: '50%' }} size="large" onClick={() => this.search()}>Search</Button>
                     </Col>
                 </Row>
-                <Row>
+                <Row gutter={16}>
                     <div className="errors">
                         {this.state.errors.map(error => <div key={error}>{error}</div>)}
                     </div>
                 </Row>
-                <Row>
+                <Row gutter={16}>
                     <Col span={16}>
                         <Table rowSelection={this.rowSelection} dataSource={this.state.dataSource} columns={this.columns} rowKey={record => record.InvoiceID} />
                     </Col>

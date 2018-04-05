@@ -3,6 +3,7 @@ const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLList, GraphQLInt, Gr
 const UserType = require('./user_type');
 const InvoiceSearchType = require('./invoiceSearch_type');
 const InvoiceStatusesType = require('./invoiceStatuses_type');
+const ContractsType = require('./contracts_type');
 const InvoiceService = require('../../services/invoice');
 const GraphQLDate = require('graphql-date');
 
