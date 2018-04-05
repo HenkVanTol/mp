@@ -40,8 +40,6 @@ function CreateInvoice(Invoice) {
 
 function UpdateInvoice(Invoice) {
     return new Promise(function (resolve, reject) {
-        console.log("in update");
-        console.log("Invoice: ", Invoice);
         db.get().request()
             .input("InvoiceID", sql.Int, Invoice.InvoiceID)
             .input("InvoiceNumber", sql.VarChar(100), Invoice.InvoiceNumber)

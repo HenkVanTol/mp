@@ -151,7 +151,7 @@ class Invoice extends Component {
                             <FormItemLabel value="Contract Description: " />
                             {/* <FormItemTextInput value={this.state.ContractDescription} onChange={e => this.setState({ ContractDescription: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.ContractDescription} />
-                            <FormItemLabel value="Status ID: " />
+                            <FormItemLabel value="Status: " />
                             <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
                                 renderOptions={this.renderInvoiceStatuses.bind(this)} />
                         </Row>

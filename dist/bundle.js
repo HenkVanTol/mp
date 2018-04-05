@@ -47871,7 +47871,7 @@ var Invoice = function (_Component) {
                             { gutter: 16 },
                             _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract Description: ' }),
                             _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.ContractDescription }),
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Status ID: ' }),
+                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Status: ' }),
                             _react2.default.createElement(_FormItemCombo2.default, { value: this.state.StatusID, onChange: function onChange(value) {
                                     return _this4.setState({ StatusID: value });
                                 },

@@ -15,9 +15,9 @@ const app = express();
 //MSSQL connection settings
 const options = {
   user: 'sa',
-  password: '',
-  server: '', 
-  database: '',
+  password: 'Kc1p1tlum',
+  server: '192.168.25.181', 
+  database: 'MultiPick',
   // options: {
   //     encrypt: true // Use this if you're on Windows Azure
   // }
