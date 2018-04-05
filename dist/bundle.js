@@ -47754,29 +47754,29 @@ var Invoice = function (_Component) {
                     mutation: _UpdateInvoice2.default,
                     variables: { InvoiceID: InvoiceID, InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
                 }).then(function () {
-                    // this.props.client.query({
-                    //     query: findById,
-                    //     variables: { InvoiceID: this.props.params.id },
-                    //     options: {
-                    //         fetchPolicy: 'network-only'
-                    //     }
-                    // }).then((result) => {
-                    //     console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
-                    //     let invoice = result.data.InvoiceByID[0];
-                    //     if (invoice) {
-                    //         this.mapState(invoice);
-                    //     }
-                    (0, _sweetalert2.default)({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Invoice updated',
-                        showConfirmButton: false,
-                        animation: false,
-                        imageWidth: 100,
-                        imageHeight: 50,
-                        timer: 1000
+                    _this3.props.client.query({
+                        query: _InvoiceByID2.default,
+                        variables: { InvoiceID: _this3.props.params.id },
+                        options: {
+                            fetchPolicy: 'network-only'
+                        }
+                    }).then(function (result) {
+                        console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
+                        var invoice = result.data.InvoiceByID[0];
+                        if (invoice) {
+                            _this3.mapState(invoice);
+                        }
+                        (0, _sweetalert2.default)({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Invoice updated',
+                            showConfirmButton: false,
+                            animation: false,
+                            imageWidth: 100,
+                            imageHeight: 50,
+                            timer: 1000
+                        });
                     });
-                    // });
                 }).catch(function (res) {
                     var errors = res.graphQLErrors.map(function (error) {
                         return error.message;

@@ -8,4 +8,4 @@
 - alert when persisted - done
 - responsive for more sizes
 - date format in grid
-- Contracts/Statuses should only be part of InvoiceByID, not InvoiceSearch
+- Contracts/Statuses should only be part of InvoiceByID, not InvoiceSearch - done (handled by graphql)

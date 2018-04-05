@@ -59,29 +59,29 @@ class Invoice extends Component {
                 mutation: update,
                 variables: { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }
             }).then(() => {
-                // this.props.client.query({
-                //     query: findById,
-                //     variables: { InvoiceID: this.props.params.id },
-                //     options: {
-                //         fetchPolicy: 'network-only'
-                //     }
-                // }).then((result) => {
-                //     console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
-                //     let invoice = result.data.InvoiceByID[0];
-                //     if (invoice) {
-                //         this.mapState(invoice);
-                //     }
-                swal({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Invoice updated',
-                    showConfirmButton: false,
-                    animation: false,
-                    imageWidth: 100,
-                    imageHeight: 50,
-                    timer: 1000
+                this.props.client.query({
+                    query: findById,
+                    variables: { InvoiceID: this.props.params.id },
+                    options: {
+                        fetchPolicy: 'network-only'
+                    }
+                }).then((result) => {
+                    console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
+                    let invoice = result.data.InvoiceByID[0];
+                    if (invoice) {
+                        this.mapState(invoice);
+                    }
+                    swal({
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Invoice updated',
+                        showConfirmButton: false,
+                        animation: false,
+                        imageWidth: 100,
+                        imageHeight: 50,
+                        timer: 1000
+                    });
                 });
-                // });
             }).catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
                 this.setState({ errors });

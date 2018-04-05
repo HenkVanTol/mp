@@ -33,7 +33,7 @@ const InvoiceSearchType = new GraphQLObjectType({
         Contracts: {
             type: new GraphQLList(ContractsType),
             resolve() {
-                console.log("trying to resolve contracts");
+                console.log("Resolving contracts");
                 return InvoiceService.Contracts();
             }
         }
