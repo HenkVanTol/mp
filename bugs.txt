@@ -1,11 +1,12 @@
-- edit invoice
+- edit invoice - done
 - can sign up multiple times
 - load dropdowns reliably (chain promise) - done
-- check for single graphql call: lookups plus result in one call
+- check for single graphql call: lookups plus result in one call - done
 - break sql statements into multiple lines
-- edit not refreshing
+- edit not refreshing - done
 - ssl
 - alert when persisted - done
-- responsive for more sizes
+- responsive for more sizes - done
 - date format in grid
 - Contracts/Statuses should only be part of InvoiceByID, not InvoiceSearch - done (handled by graphql)
+- create new
