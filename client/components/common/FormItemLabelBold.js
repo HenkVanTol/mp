@@ -6,9 +6,9 @@ class FormItemLabelBold extends Component {
     render() {
         return (
             <Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                <FormItem>
-                    <label style={{ fontWeight: 'bold' }}>{this.props.value}</label>
-                </FormItem>
+                {/* <FormItem> */}
+                    <span style={{ fontWeight: 'bold', width: '100%', marginRight: '8px', marginBottom: '8px' }}>{this.props.value}</span>
+                {/* </FormItem> */}
             </Col>
         );
     }

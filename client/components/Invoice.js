@@ -16,6 +16,9 @@ import create from '../mutations/CreateInvoice';
 import findById from '../queries/InvoiceByID';
 import update from '../mutations/UpdateInvoice';
 
+import toastr from 'toastr';
+import '../../node_modules/toastr/build/toastr.css';
+
 class Invoice extends Component {
     constructor(props) {
         super(props);
@@ -71,16 +74,17 @@ class Invoice extends Component {
                     if (invoice) {
                         this.mapState(invoice);
                     }
-                    swal({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Invoice updated',
-                        showConfirmButton: false,
-                        animation: false,
-                        imageWidth: 100,
-                        imageHeight: 50,
-                        timer: 1000
-                    });
+                    toastr.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
+                    // swal({
+                    //     position: 'top-end',
+                    //     type: 'success',
+                    //     title: 'Invoice updated',
+                    //     showConfirmButton: false,
+                    //     animation: false,
+                    //     imageWidth: 100,
+                    //     imageHeight: 50,
+                    //     timer: 1000
+                    // });
                 });
             }).catch(res => {
                 const errors = res.graphQLErrors.map(error => error.message);
@@ -136,8 +140,9 @@ class Invoice extends Component {
             return (
                 <div>
                     <h2>Edit Invoice</h2>
-                    <Form layout="inline" onSubmit={this.onSubmit.bind(this)}>
-                        <Row gutter={16}>
+                    {/* <Form layout="inline" onSubmit={this.onSubmit.bind(this)}> */}
+                    {/* <Form layout="inline"> */}
+                        <Row>
                             <FormItemLabel value="Invoice Number: " />
                             {/* <FormItemTextInput value={this.state.InvoiceNumber} onChange={e => this.setState({ InvoiceNumber: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.InvoiceNumber} />
@@ -147,7 +152,7 @@ class Invoice extends Component {
                                 renderOptions={this.renderContracts.bind(this)} />
                         </Row>
 
-                        <Row gutter={16}>
+                        <Row>
                             <FormItemLabel value="Contract Description: " />
                             {/* <FormItemTextInput value={this.state.ContractDescription} onChange={e => this.setState({ ContractDescription: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.ContractDescription} />
@@ -156,7 +161,7 @@ class Invoice extends Component {
                                 renderOptions={this.renderInvoiceStatuses.bind(this)} />
                         </Row>
 
-                        <Row gutter={16}>
+                        <Row>
                             <FormItemLabel value="Current Status: " />
                             {/* <FormItemTextInput value={this.state.StatusDescription} onChange={e => this.setState({ StatusDescription: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.StatusDescription} />
@@ -164,23 +169,25 @@ class Invoice extends Component {
                             <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} />
                         </Row>
 
-                        <Row gutter={16}>
+                        <Row>
                             <FormItemLabel value="Date Raised: " />
                             <FormItemDatePicker value={this.state.DateRaised}
-                                handleChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
+                                onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
                         </Row>
-
-                        <Row gutter={16}>
+                        <br>
+                        </br>
+                        <Row>
                             <Col span={8} />
                             <Col span={8}>
-                                <Button type="primary" style={{ width: '100%' }} size="large" htmlType="submit" >Submit</Button>
+                                <Button type="primary" style={{ width: '100%' }} size="large" onClick={this.onSubmit.bind(this)} >Submit</Button>
+                                {/* htmlType="submit" */}
                             </Col>
                             <Col span={8} />
                             <div className="errors">
                                 {this.state.errors.map(error => <div key={error}>{error}</div>)}
                             </div>
                         </Row>
-                    </Form>
+                    {/* </Form> */}
                 </div>
             );
         }

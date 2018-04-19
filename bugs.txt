@@ -9,4 +9,5 @@
 - responsive for more sizes - done
 - date format in grid
 - Contracts/Statuses should only be part of InvoiceByID, not InvoiceSearch - done (handled by graphql)
+- Datepicker not updating date
 - create new

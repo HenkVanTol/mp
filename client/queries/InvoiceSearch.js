@@ -11,11 +11,7 @@ export default gql`
             StatusID, 
             StatusDescription, 
             Value, 
-            DateRaised,
-            InvoiceStatuses {
-                InvoiceStatusID,
-                Ref
-            }
+            DateRaised
         }
     }
 `;
