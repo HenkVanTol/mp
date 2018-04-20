@@ -7,7 +7,10 @@
 - ssl
 - alert when persisted - done
 - responsive for more sizes - done
-- date format in grid
+- date format in grid - done
 - Contracts/Statuses should only be part of InvoiceByID, not InvoiceSearch - done (handled by graphql)
-- Datepicker not updating date
+- Datepicker not updating date - done
 - create new
+- search button resize
+- validation
+- not logging out completely the first time

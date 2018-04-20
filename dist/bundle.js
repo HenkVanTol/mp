@@ -47577,363 +47577,7 @@ var App = function App(props) {
 exports.default = App;
 
 /***/ }),
-/* 477 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _button = __webpack_require__(83);
-
-var _button2 = _interopRequireDefault(_button);
-
-var _col = __webpack_require__(42);
-
-var _col2 = _interopRequireDefault(_col);
-
-var _row = __webpack_require__(136);
-
-var _row2 = _interopRequireDefault(_row);
-
-var _select = __webpack_require__(103);
-
-var _select2 = _interopRequireDefault(_select);
-
-var _form = __webpack_require__(44);
-
-var _form2 = _interopRequireDefault(_form);
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(84);
-
-__webpack_require__(43);
-
-__webpack_require__(137);
-
-__webpack_require__(138);
-
-__webpack_require__(45);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactApollo = __webpack_require__(41);
-
-var _moment = __webpack_require__(1);
-
-var _moment2 = _interopRequireDefault(_moment);
-
-var _sweetalert = __webpack_require__(1026);
-
-var _sweetalert2 = _interopRequireDefault(_sweetalert);
-
-var _FormItemTextInput = __webpack_require__(233);
-
-var _FormItemTextInput2 = _interopRequireDefault(_FormItemTextInput);
-
-var _FormItemCombo = __webpack_require__(591);
-
-var _FormItemCombo2 = _interopRequireDefault(_FormItemCombo);
-
-var _FormItemLabel = __webpack_require__(232);
-
-var _FormItemLabel2 = _interopRequireDefault(_FormItemLabel);
-
-var _FormItemLabelBold = __webpack_require__(593);
-
-var _FormItemLabelBold2 = _interopRequireDefault(_FormItemLabelBold);
-
-var _FormItemDatePicker = __webpack_require__(592);
-
-var _FormItemDatePicker2 = _interopRequireDefault(_FormItemDatePicker);
-
-var _CreateInvoice = __webpack_require__(595);
-
-var _CreateInvoice2 = _interopRequireDefault(_CreateInvoice);
-
-var _InvoiceByID = __webpack_require__(600);
-
-var _InvoiceByID2 = _interopRequireDefault(_InvoiceByID);
-
-var _UpdateInvoice = __webpack_require__(599);
-
-var _UpdateInvoice2 = _interopRequireDefault(_UpdateInvoice);
-
-var _toastr = __webpack_require__(1029);
-
-var _toastr2 = _interopRequireDefault(_toastr);
-
-__webpack_require__(1024);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FormItem = _form2.default.Item;
-var Option = _select2.default.Option;
-
-var Invoice = function (_Component) {
-    _inherits(Invoice, _Component);
-
-    function Invoice(props) {
-        _classCallCheck(this, Invoice);
-
-        var _this = _possibleConstructorReturn(this, (Invoice.__proto__ || Object.getPrototypeOf(Invoice)).call(this, props));
-
-        _this.state = {
-            InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
-            StatusDescription: null, Value: null, DateRaised: (0, _moment2.default)(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
-        };
-        return _this;
-    }
-
-    _createClass(Invoice, [{
-        key: 'componentDidMount',
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            //edit existing
-            if (this.props.params.id) {
-                this.props.client.query({
-                    query: _InvoiceByID2.default,
-                    variables: { InvoiceID: this.props.params.id },
-                    options: {
-                        fetchPolicy: 'network-only'
-                    }
-                }).then(function (result) {
-                    console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
-                    var invoice = result.data.InvoiceByID[0];
-                    if (invoice) {
-                        _this2.mapState(invoice);
-                    }
-                });
-            }
-        }
-    }, {
-        key: 'mapState',
-        value: function mapState(invoice) {
-            this.setState({
-                InvoiceID: invoice.InvoiceID, InvoiceNumber: invoice.InvoiceNumber, ContractID: invoice.ContractID,
-                ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
-                StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: (0, _moment2.default)(invoice.DateRaised),
-                errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
-            }, function () {
-                return console.log("setState done");
-            }, function () {
-                return console.log("setState error");
-            });
-        }
-    }, {
-        key: 'onSubmit',
-        value: function onSubmit(event) {
-            var _this3 = this;
-
-            event.preventDefault();
-            var _state = this.state,
-                InvoiceID = _state.InvoiceID,
-                InvoiceNumber = _state.InvoiceNumber,
-                ContractID = _state.ContractID,
-                StatusID = _state.StatusID,
-                DateRaised = _state.DateRaised,
-                Value = _state.Value;
-
-            if (this.state.edit == true) {
-                this.props.client.mutate({
-                    mutation: _UpdateInvoice2.default,
-                    variables: { InvoiceID: InvoiceID, InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
-                }).then(function () {
-                    _this3.props.client.query({
-                        query: _InvoiceByID2.default,
-                        variables: { InvoiceID: _this3.props.params.id },
-                        options: {
-                            fetchPolicy: 'network-only'
-                        }
-                    }).then(function (result) {
-                        console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
-                        var invoice = result.data.InvoiceByID[0];
-                        if (invoice) {
-                            _this3.mapState(invoice);
-                        }
-                        _toastr2.default.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
-                        // swal({
-                        //     position: 'top-end',
-                        //     type: 'success',
-                        //     title: 'Invoice updated',
-                        //     showConfirmButton: false,
-                        //     animation: false,
-                        //     imageWidth: 100,
-                        //     imageHeight: 50,
-                        //     timer: 1000
-                        // });
-                    });
-                }).catch(function (res) {
-                    var errors = res.graphQLErrors.map(function (error) {
-                        return error.message;
-                    });
-                    _this3.setState({ errors: errors });
-                });
-            } else {
-                this.props.client.mutate({
-                    mutation: _CreateInvoice2.default,
-                    variables: { InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
-                }).then(function () {
-                    (0, _sweetalert2.default)({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Invoice created',
-                        showConfirmButton: false,
-                        imageWidth: 100,
-                        imageHeight: 50,
-                        timer: 1000,
-                        animation: false
-                    });
-                }).catch(function (res) {
-                    var errors = res.graphQLErrors.map(function (error) {
-                        return error.message;
-                    });
-                    _this3.setState({ errors: errors });
-                });
-            }
-        }
-    }, {
-        key: 'renderInvoiceStatuses',
-        value: function renderInvoiceStatuses() {
-            if (!this.props.data.loading) {
-                return this.state.InvoiceStatuses.map(function (status) {
-                    return _react2.default.createElement(
-                        Option,
-                        { key: status.InvoiceStatusID, value: status.InvoiceStatusID },
-                        status.Ref
-                    );
-                });
-            }
-        }
-    }, {
-        key: 'renderContracts',
-        value: function renderContracts() {
-            if (!this.props.data.loading) {
-                return this.state.Contracts.map(function (contract) {
-                    return _react2.default.createElement(
-                        Option,
-                        { key: contract.ContractID, value: contract.ContractID },
-                        contract.Ref
-                    );
-                });
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this4 = this;
-
-            if (this.props.data.loading) {
-                return _react2.default.createElement(
-                    'div',
-                    null,
-                    'Loading...'
-                );
-            } else {
-                return _react2.default.createElement(
-                    'div',
-                    null,
-                    _react2.default.createElement(
-                        'h2',
-                        null,
-                        'Edit Invoice'
-                    ),
-                    _react2.default.createElement(
-                        _row2.default,
-                        null,
-                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Invoice Number: ' }),
-                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.InvoiceNumber }),
-                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract: ' }),
-                        _react2.default.createElement(_FormItemCombo2.default, { value: this.state.ContractID, onChange: function onChange(value) {
-                                return _this4.setState({ ContractID: value });
-                            },
-                            renderOptions: this.renderContracts.bind(this) })
-                    ),
-                    _react2.default.createElement(
-                        _row2.default,
-                        null,
-                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract Description: ' }),
-                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.ContractDescription }),
-                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Status: ' }),
-                        _react2.default.createElement(_FormItemCombo2.default, { value: this.state.StatusID, onChange: function onChange(value) {
-                                return _this4.setState({ StatusID: value });
-                            },
-                            renderOptions: this.renderInvoiceStatuses.bind(this) })
-                    ),
-                    _react2.default.createElement(
-                        _row2.default,
-                        null,
-                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Current Status: ' }),
-                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.StatusDescription }),
-                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Value: ' }),
-                        _react2.default.createElement(_FormItemTextInput2.default, { value: this.state.Value, onChange: function onChange(e) {
-                                return _this4.setState({ Value: e.target.value });
-                            } })
-                    ),
-                    _react2.default.createElement(
-                        _row2.default,
-                        null,
-                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Date Raised: ' }),
-                        _react2.default.createElement(_FormItemDatePicker2.default, { value: this.state.DateRaised,
-                            onChange: function onChange(date, dateString) {
-                                _this4.setState({ DateRaised: date });
-                            } })
-                    ),
-                    _react2.default.createElement('br', null),
-                    _react2.default.createElement(
-                        _row2.default,
-                        null,
-                        _react2.default.createElement(_col2.default, { span: 8 }),
-                        _react2.default.createElement(
-                            _col2.default,
-                            { span: 8 },
-                            _react2.default.createElement(
-                                _button2.default,
-                                { type: 'primary', style: { width: '100%' }, size: 'large', onClick: this.onSubmit.bind(this) },
-                                'Submit'
-                            )
-                        ),
-                        _react2.default.createElement(_col2.default, { span: 8 }),
-                        _react2.default.createElement(
-                            'div',
-                            { className: 'errors' },
-                            this.state.errors.map(function (error) {
-                                return _react2.default.createElement(
-                                    'div',
-                                    { key: error },
-                                    error
-                                );
-                            })
-                        )
-                    )
-                );
-            }
-        }
-    }]);
-
-    return Invoice;
-}(_react.Component);
-// export default graphql(findById, {
-//     options: (props) => { return { variables: { id: props.params.id } } }
-// })(Invoice);
-
-
-exports.default = (0, _reactApollo.withApollo)(Invoice);
-
-/***/ }),
+/* 477 */,
 /* 478 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -47996,6 +47640,10 @@ var _FormItemLabel2 = _interopRequireDefault(_FormItemLabel);
 
 var _reactRouter = __webpack_require__(53);
 
+var _moment = __webpack_require__(1);
+
+var _moment2 = _interopRequireDefault(_moment);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -48034,12 +47682,19 @@ var InvoiceSearch = function (_Component) {
         }, {
             title: 'Date Raised',
             dataIndex: 'DateRaised',
-            key: 'DateRaised'
+            key: 'DateRaised',
+            render: function render(text, record) {
+                return _react2.default.createElement(
+                    'span',
+                    null,
+                    (0, _moment2.default)(record.DateRaised).format("DD/MM/YYYY")
+                );
+            }
         }, {
             render: function render(text, record) {
                 return _react2.default.createElement(
                     _reactRouter.Link,
-                    { to: '/invoice/' + record.InvoiceID },
+                    { to: '/invoiceEdit/' + record.InvoiceID },
                     'Edit'
                 );
             }
@@ -60808,10 +60463,10 @@ var SideMenu = function (_Component) {
                     ),
                     _react2.default.createElement(
                         _menu2.default.Item,
-                        { key: 'invoice' },
+                        { key: 'invoiceCreate' },
                         _react2.default.createElement(
                             _reactRouter.Link,
-                            { to: '/invoice' },
+                            { to: '/invoiceCreate' },
                             'Create'
                         )
                     ),
@@ -61093,9 +60748,13 @@ var _InvoiceSearch = __webpack_require__(478);
 
 var _InvoiceSearch2 = _interopRequireDefault(_InvoiceSearch);
 
-var _Invoice = __webpack_require__(477);
+var _InvoiceEdit = __webpack_require__(1034);
 
-var _Invoice2 = _interopRequireDefault(_Invoice);
+var _InvoiceEdit2 = _interopRequireDefault(_InvoiceEdit);
+
+var _InvoiceCreate = __webpack_require__(1035);
+
+var _InvoiceCreate2 = _interopRequireDefault(_InvoiceCreate);
 
 var _requireAuth = __webpack_require__(481);
 
@@ -61149,9 +60808,9 @@ var Root = function Root() {
         _react2.default.createElement(_reactRouter.IndexRoute, { component: _LoginForm2.default }),
         _react2.default.createElement(_reactRouter.Route, { path: 'login', component: _LoginForm2.default }),
         _react2.default.createElement(_reactRouter.Route, { path: 'signup', component: _SignupForm2.default }),
-        _react2.default.createElement(_reactRouter.Route, { path: 'invoice', component: (0, _requireAuth2.default)(_Invoice2.default) }),
+        _react2.default.createElement(_reactRouter.Route, { path: 'invoiceCreate', component: (0, _requireAuth2.default)(_InvoiceCreate2.default) }),
         _react2.default.createElement(_reactRouter.Route, { path: 'invoiceSearch', component: (0, _requireAuth2.default)(_InvoiceSearch2.default) }),
-        _react2.default.createElement(_reactRouter.Route, { path: 'invoice/:id', component: (0, _requireAuth2.default)(_Invoice2.default) })
+        _react2.default.createElement(_reactRouter.Route, { path: 'invoiceEdit/:id', component: (0, _requireAuth2.default)(_InvoiceEdit2.default) })
       )
     )
   );
@@ -114464,6 +114123,720 @@ exports.Observable = Observable;
 
 }, "*");
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(100)(module)))
+
+/***/ }),
+/* 1034 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _button = __webpack_require__(83);
+
+var _button2 = _interopRequireDefault(_button);
+
+var _col = __webpack_require__(42);
+
+var _col2 = _interopRequireDefault(_col);
+
+var _row = __webpack_require__(136);
+
+var _row2 = _interopRequireDefault(_row);
+
+var _select = __webpack_require__(103);
+
+var _select2 = _interopRequireDefault(_select);
+
+var _form = __webpack_require__(44);
+
+var _form2 = _interopRequireDefault(_form);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(84);
+
+__webpack_require__(43);
+
+__webpack_require__(137);
+
+__webpack_require__(138);
+
+__webpack_require__(45);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactApollo = __webpack_require__(41);
+
+var _moment = __webpack_require__(1);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _sweetalert = __webpack_require__(1026);
+
+var _sweetalert2 = _interopRequireDefault(_sweetalert);
+
+var _FormItemTextInput = __webpack_require__(233);
+
+var _FormItemTextInput2 = _interopRequireDefault(_FormItemTextInput);
+
+var _FormItemCombo = __webpack_require__(591);
+
+var _FormItemCombo2 = _interopRequireDefault(_FormItemCombo);
+
+var _FormItemLabel = __webpack_require__(232);
+
+var _FormItemLabel2 = _interopRequireDefault(_FormItemLabel);
+
+var _FormItemLabelBold = __webpack_require__(593);
+
+var _FormItemLabelBold2 = _interopRequireDefault(_FormItemLabelBold);
+
+var _FormItemDatePicker = __webpack_require__(592);
+
+var _FormItemDatePicker2 = _interopRequireDefault(_FormItemDatePicker);
+
+var _CreateInvoice = __webpack_require__(595);
+
+var _CreateInvoice2 = _interopRequireDefault(_CreateInvoice);
+
+var _InvoiceByID = __webpack_require__(600);
+
+var _InvoiceByID2 = _interopRequireDefault(_InvoiceByID);
+
+var _UpdateInvoice = __webpack_require__(599);
+
+var _UpdateInvoice2 = _interopRequireDefault(_UpdateInvoice);
+
+var _toastr = __webpack_require__(1029);
+
+var _toastr2 = _interopRequireDefault(_toastr);
+
+__webpack_require__(1024);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FormItem = _form2.default.Item;
+var Option = _select2.default.Option;
+
+var InvoiceEdit = function (_Component) {
+    _inherits(InvoiceEdit, _Component);
+
+    function InvoiceEdit(props) {
+        _classCallCheck(this, InvoiceEdit);
+
+        var _this = _possibleConstructorReturn(this, (InvoiceEdit.__proto__ || Object.getPrototypeOf(InvoiceEdit)).call(this, props));
+
+        _this.state = {
+            InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
+            StatusDescription: null, Value: null, DateRaised: (0, _moment2.default)(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
+        };
+        return _this;
+    }
+
+    _createClass(InvoiceEdit, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            //edit existing
+            if (this.props.params.id) {
+                this.props.client.query({
+                    query: _InvoiceByID2.default,
+                    variables: { InvoiceID: this.props.params.id },
+                    options: {
+                        fetchPolicy: 'network-only'
+                    }
+                }).then(function (result) {
+                    console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
+                    var invoice = result.data.InvoiceByID[0];
+                    if (invoice) {
+                        _this2.mapState(invoice);
+                    }
+                });
+            }
+        }
+    }, {
+        key: 'mapState',
+        value: function mapState(invoice) {
+            this.setState({
+                InvoiceID: invoice.InvoiceID, InvoiceNumber: invoice.InvoiceNumber, ContractID: invoice.ContractID,
+                ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
+                StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: (0, _moment2.default)(invoice.DateRaised),
+                errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
+            }, function () {
+                return console.log("setState done");
+            }, function () {
+                return console.log("setState error");
+            });
+        }
+    }, {
+        key: 'onSubmit',
+        value: function onSubmit(event) {
+            var _this3 = this;
+
+            event.preventDefault();
+            var _state = this.state,
+                InvoiceID = _state.InvoiceID,
+                InvoiceNumber = _state.InvoiceNumber,
+                ContractID = _state.ContractID,
+                StatusID = _state.StatusID,
+                DateRaised = _state.DateRaised,
+                Value = _state.Value;
+
+            if (this.state.edit == true) {
+                this.props.client.mutate({
+                    mutation: _UpdateInvoice2.default,
+                    variables: { InvoiceID: InvoiceID, InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
+                }).then(function () {
+                    _this3.props.client.query({
+                        query: _InvoiceByID2.default,
+                        variables: { InvoiceID: _this3.props.params.id },
+                        options: {
+                            fetchPolicy: 'network-only'
+                        }
+                    }).then(function (result) {
+                        console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
+                        var invoice = result.data.InvoiceByID[0];
+                        if (invoice) {
+                            _this3.mapState(invoice);
+                        }
+                        _toastr2.default.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
+                        // swal({
+                        //     position: 'top-end',
+                        //     type: 'success',
+                        //     title: 'Invoice updated',
+                        //     showConfirmButton: false,
+                        //     animation: false,
+                        //     imageWidth: 100,
+                        //     imageHeight: 50,
+                        //     timer: 1000
+                        // });
+                    });
+                }).catch(function (res) {
+                    var errors = res.graphQLErrors.map(function (error) {
+                        return error.message;
+                    });
+                    _this3.setState({ errors: errors });
+                });
+            } else {
+                this.props.client.mutate({
+                    mutation: _CreateInvoice2.default,
+                    variables: { InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
+                }).then(function () {
+                    (0, _sweetalert2.default)({
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Invoice created',
+                        showConfirmButton: false,
+                        imageWidth: 100,
+                        imageHeight: 50,
+                        timer: 1000,
+                        animation: false
+                    });
+                }).catch(function (res) {
+                    var errors = res.graphQLErrors.map(function (error) {
+                        return error.message;
+                    });
+                    _this3.setState({ errors: errors });
+                });
+            }
+        }
+    }, {
+        key: 'renderInvoiceStatuses',
+        value: function renderInvoiceStatuses() {
+            if (!this.props.data.loading) {
+                return this.state.InvoiceStatuses.map(function (status) {
+                    return _react2.default.createElement(
+                        Option,
+                        { key: status.InvoiceStatusID, value: status.InvoiceStatusID },
+                        status.Ref
+                    );
+                });
+            }
+        }
+    }, {
+        key: 'renderContracts',
+        value: function renderContracts() {
+            if (!this.props.data.loading) {
+                return this.state.Contracts.map(function (contract) {
+                    return _react2.default.createElement(
+                        Option,
+                        { key: contract.ContractID, value: contract.ContractID },
+                        contract.Ref
+                    );
+                });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            if (this.props.data.loading) {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    'Loading...'
+                );
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h2',
+                        null,
+                        'Edit Invoice'
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Invoice Number: ' }),
+                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.InvoiceNumber }),
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract: ' }),
+                        _react2.default.createElement(_FormItemCombo2.default, { value: this.state.ContractID, onChange: function onChange(value) {
+                                return _this4.setState({ ContractID: value });
+                            },
+                            renderOptions: this.renderContracts.bind(this) })
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract Description: ' }),
+                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.ContractDescription }),
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Status: ' }),
+                        _react2.default.createElement(_FormItemCombo2.default, { value: this.state.StatusID, onChange: function onChange(value) {
+                                return _this4.setState({ StatusID: value });
+                            },
+                            renderOptions: this.renderInvoiceStatuses.bind(this) })
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Current Status: ' }),
+                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.StatusDescription }),
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Value: ' }),
+                        _react2.default.createElement(_FormItemTextInput2.default, { value: this.state.Value, onChange: function onChange(e) {
+                                return _this4.setState({ Value: e.target.value });
+                            } })
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Date Raised: ' }),
+                        _react2.default.createElement(_FormItemDatePicker2.default, { value: this.state.DateRaised,
+                            onChange: function onChange(date, dateString) {
+                                _this4.setState({ DateRaised: date });
+                            } })
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_col2.default, { span: 8 }),
+                        _react2.default.createElement(
+                            _col2.default,
+                            { span: 8 },
+                            _react2.default.createElement(
+                                _button2.default,
+                                { type: 'primary', style: { width: '100%' }, size: 'large', onClick: this.onSubmit.bind(this) },
+                                'Submit'
+                            )
+                        ),
+                        _react2.default.createElement(_col2.default, { span: 8 }),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'errors' },
+                            this.state.errors.map(function (error) {
+                                return _react2.default.createElement(
+                                    'div',
+                                    { key: error },
+                                    error
+                                );
+                            })
+                        )
+                    )
+                );
+            }
+        }
+    }]);
+
+    return InvoiceEdit;
+}(_react.Component);
+// export default graphql(findById, {
+//     options: (props) => { return { variables: { id: props.params.id } } }
+// })(Invoice);
+
+
+exports.default = (0, _reactApollo.withApollo)(InvoiceEdit);
+
+/***/ }),
+/* 1035 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _button = __webpack_require__(83);
+
+var _button2 = _interopRequireDefault(_button);
+
+var _col = __webpack_require__(42);
+
+var _col2 = _interopRequireDefault(_col);
+
+var _row = __webpack_require__(136);
+
+var _row2 = _interopRequireDefault(_row);
+
+var _select = __webpack_require__(103);
+
+var _select2 = _interopRequireDefault(_select);
+
+var _form = __webpack_require__(44);
+
+var _form2 = _interopRequireDefault(_form);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+__webpack_require__(84);
+
+__webpack_require__(43);
+
+__webpack_require__(137);
+
+__webpack_require__(138);
+
+__webpack_require__(45);
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactApollo = __webpack_require__(41);
+
+var _moment = __webpack_require__(1);
+
+var _moment2 = _interopRequireDefault(_moment);
+
+var _sweetalert = __webpack_require__(1026);
+
+var _sweetalert2 = _interopRequireDefault(_sweetalert);
+
+var _FormItemTextInput = __webpack_require__(233);
+
+var _FormItemTextInput2 = _interopRequireDefault(_FormItemTextInput);
+
+var _FormItemCombo = __webpack_require__(591);
+
+var _FormItemCombo2 = _interopRequireDefault(_FormItemCombo);
+
+var _FormItemLabel = __webpack_require__(232);
+
+var _FormItemLabel2 = _interopRequireDefault(_FormItemLabel);
+
+var _FormItemLabelBold = __webpack_require__(593);
+
+var _FormItemLabelBold2 = _interopRequireDefault(_FormItemLabelBold);
+
+var _FormItemDatePicker = __webpack_require__(592);
+
+var _FormItemDatePicker2 = _interopRequireDefault(_FormItemDatePicker);
+
+var _CreateInvoice = __webpack_require__(595);
+
+var _CreateInvoice2 = _interopRequireDefault(_CreateInvoice);
+
+var _InvoiceByID = __webpack_require__(600);
+
+var _InvoiceByID2 = _interopRequireDefault(_InvoiceByID);
+
+var _UpdateInvoice = __webpack_require__(599);
+
+var _UpdateInvoice2 = _interopRequireDefault(_UpdateInvoice);
+
+var _toastr = __webpack_require__(1029);
+
+var _toastr2 = _interopRequireDefault(_toastr);
+
+__webpack_require__(1024);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FormItem = _form2.default.Item;
+var Option = _select2.default.Option;
+
+var InvoiceCreate = function (_Component) {
+    _inherits(InvoiceCreate, _Component);
+
+    function InvoiceCreate(props) {
+        _classCallCheck(this, InvoiceCreate);
+
+        var _this = _possibleConstructorReturn(this, (InvoiceCreate.__proto__ || Object.getPrototypeOf(InvoiceCreate)).call(this, props));
+
+        _this.state = {
+            InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
+            StatusDescription: null, Value: null, DateRaised: (0, _moment2.default)(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
+        };
+        return _this;
+    }
+
+    _createClass(InvoiceCreate, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            //edit existing
+            if (this.props.params.id) {
+                this.props.client.query({
+                    query: _InvoiceByID2.default,
+                    variables: { InvoiceID: this.props.params.id },
+                    options: {
+                        fetchPolicy: 'network-only'
+                    }
+                }).then(function (result) {
+                    console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
+                    var invoice = result.data.InvoiceByID[0];
+                    if (invoice) {
+                        _this2.mapState(invoice);
+                    }
+                });
+            }
+        }
+    }, {
+        key: 'mapState',
+        value: function mapState(invoice) {
+            this.setState({
+                InvoiceID: invoice.InvoiceID, InvoiceNumber: invoice.InvoiceNumber, ContractID: invoice.ContractID,
+                ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
+                StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: (0, _moment2.default)(invoice.DateRaised),
+                errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
+            }, function () {
+                return console.log("setState done");
+            }, function () {
+                return console.log("setState error");
+            });
+        }
+    }, {
+        key: 'onSubmit',
+        value: function onSubmit(event) {
+            var _this3 = this;
+
+            event.preventDefault();
+            var _state = this.state,
+                InvoiceID = _state.InvoiceID,
+                InvoiceNumber = _state.InvoiceNumber,
+                ContractID = _state.ContractID,
+                StatusID = _state.StatusID,
+                DateRaised = _state.DateRaised,
+                Value = _state.Value;
+
+            if (this.state.edit == true) {
+                this.props.client.mutate({
+                    mutation: _UpdateInvoice2.default,
+                    variables: { InvoiceID: InvoiceID, InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
+                }).then(function () {
+                    _this3.props.client.query({
+                        query: _InvoiceByID2.default,
+                        variables: { InvoiceID: _this3.props.params.id },
+                        options: {
+                            fetchPolicy: 'network-only'
+                        }
+                    }).then(function (result) {
+                        console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
+                        var invoice = result.data.InvoiceByID[0];
+                        if (invoice) {
+                            _this3.mapState(invoice);
+                        }
+                        _toastr2.default.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
+                        // swal({
+                        //     position: 'top-end',
+                        //     type: 'success',
+                        //     title: 'Invoice updated',
+                        //     showConfirmButton: false,
+                        //     animation: false,
+                        //     imageWidth: 100,
+                        //     imageHeight: 50,
+                        //     timer: 1000
+                        // });
+                    });
+                }).catch(function (res) {
+                    var errors = res.graphQLErrors.map(function (error) {
+                        return error.message;
+                    });
+                    _this3.setState({ errors: errors });
+                });
+            } else {
+                this.props.client.mutate({
+                    mutation: _CreateInvoice2.default,
+                    variables: { InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
+                }).then(function () {
+                    (0, _sweetalert2.default)({
+                        position: 'top-end',
+                        type: 'success',
+                        title: 'Invoice created',
+                        showConfirmButton: false,
+                        imageWidth: 100,
+                        imageHeight: 50,
+                        timer: 1000,
+                        animation: false
+                    });
+                }).catch(function (res) {
+                    var errors = res.graphQLErrors.map(function (error) {
+                        return error.message;
+                    });
+                    _this3.setState({ errors: errors });
+                });
+            }
+        }
+    }, {
+        key: 'renderInvoiceStatuses',
+        value: function renderInvoiceStatuses() {
+            if (!this.props.data.loading) {
+                return this.state.InvoiceStatuses.map(function (status) {
+                    return _react2.default.createElement(
+                        Option,
+                        { key: status.InvoiceStatusID, value: status.InvoiceStatusID },
+                        status.Ref
+                    );
+                });
+            }
+        }
+    }, {
+        key: 'renderContracts',
+        value: function renderContracts() {
+            if (!this.props.data.loading) {
+                return this.state.Contracts.map(function (contract) {
+                    return _react2.default.createElement(
+                        Option,
+                        { key: contract.ContractID, value: contract.ContractID },
+                        contract.Ref
+                    );
+                });
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this4 = this;
+
+            if (this.props.data.loading) {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    'Loading...'
+                );
+            } else {
+                return _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'h2',
+                        null,
+                        'Edit Invoice'
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Invoice Number: ' }),
+                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.InvoiceNumber }),
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract: ' }),
+                        _react2.default.createElement(_FormItemCombo2.default, { value: this.state.ContractID, onChange: function onChange(value) {
+                                return _this4.setState({ ContractID: value });
+                            },
+                            renderOptions: this.renderContracts.bind(this) })
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract Description: ' }),
+                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.ContractDescription }),
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Status: ' }),
+                        _react2.default.createElement(_FormItemCombo2.default, { value: this.state.StatusID, onChange: function onChange(value) {
+                                return _this4.setState({ StatusID: value });
+                            },
+                            renderOptions: this.renderInvoiceStatuses.bind(this) })
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Current Status: ' }),
+                        _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.StatusDescription }),
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Value: ' }),
+                        _react2.default.createElement(_FormItemTextInput2.default, { value: this.state.Value, onChange: function onChange(e) {
+                                return _this4.setState({ Value: e.target.value });
+                            } })
+                    ),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_FormItemLabel2.default, { value: 'Date Raised: ' }),
+                        _react2.default.createElement(_FormItemDatePicker2.default, { value: this.state.DateRaised,
+                            onChange: function onChange(date, dateString) {
+                                _this4.setState({ DateRaised: date });
+                            } })
+                    ),
+                    _react2.default.createElement('br', null),
+                    _react2.default.createElement(
+                        _row2.default,
+                        null,
+                        _react2.default.createElement(_col2.default, { span: 8 }),
+                        _react2.default.createElement(
+                            _col2.default,
+                            { span: 8 },
+                            _react2.default.createElement(
+                                _button2.default,
+                                { type: 'primary', style: { width: '100%' }, size: 'large', onClick: this.onSubmit.bind(this) },
+                                'Submit'
+                            )
+                        ),
+                        _react2.default.createElement(_col2.default, { span: 8 }),
+                        _react2.default.createElement(
+                            'div',
+                            { className: 'errors' },
+                            this.state.errors.map(function (error) {
+                                return _react2.default.createElement(
+                                    'div',
+                                    { key: error },
+                                    error
+                                );
+                            })
+                        )
+                    )
+                );
+            }
+        }
+    }]);
+
+    return InvoiceCreate;
+}(_react.Component);
+// export default graphql(findById, {
+//     options: (props) => { return { variables: { id: props.params.id } } }
+// })(Invoice);
+
+
+exports.default = (0, _reactApollo.withApollo)(InvoiceCreate);
 
 /***/ })
 /******/ ]);

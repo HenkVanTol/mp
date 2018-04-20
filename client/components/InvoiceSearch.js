@@ -6,6 +6,7 @@ const FormItem = Form.Item;
 import FormItemTextInput from './common/FormItemTextInput';
 import FormItemLabel from './common/FormItemLabel';
 import { Link } from 'react-router';
+import moment from 'moment';
 
 class InvoiceSearch extends Component {
     constructor(props) {
@@ -31,10 +32,13 @@ class InvoiceSearch extends Component {
             title: 'Date Raised',
             dataIndex: 'DateRaised',
             key: 'DateRaised',
+            render: (text, record) => (
+                <span>{moment(record.DateRaised).format("DD/MM/YYYY")}</span>
+            )
         },
         {
             render: (text, record) => (
-                <Link to={`/invoice/${record.InvoiceID}`}>Edit</Link>
+                <Link to={`/invoiceEdit/${record.InvoiceID}`}>Edit</Link>
             )
         }];
         // this.rowSelection = {
@@ -50,7 +54,7 @@ class InvoiceSearch extends Component {
             query,
             variables: { InvoiceNumber, StatusID },
             options: {
-              fetchPolicy: 'network-only'
+                fetchPolicy: 'network-only'
             }
         }).then((result) => {
             console.log("result.data: ", result.data.InvoiceSearch);

@@ -19,7 +19,7 @@ import update from '../mutations/UpdateInvoice';
 import toastr from 'toastr';
 import '../../node_modules/toastr/build/toastr.css';
 
-class Invoice extends Component {
+class InvoiceEdit extends Component {
     constructor(props) {
         super(props);
 
@@ -196,4 +196,4 @@ class Invoice extends Component {
 // export default graphql(findById, {
 //     options: (props) => { return { variables: { id: props.params.id } } }
 // })(Invoice);
-export default withApollo(Invoice);
+export default withApollo(InvoiceEdit);
