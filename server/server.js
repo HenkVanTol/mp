@@ -17,7 +17,7 @@ const options = {
   user: 'sa',
   password: '',
   server: '', 
-  database: '',
+  database: 'MultiPick',
   // options: {
   //     encrypt: true // Use this if you're on Windows Azure
   // }

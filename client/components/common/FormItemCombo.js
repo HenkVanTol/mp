@@ -11,11 +11,11 @@ class FormItemCombo extends Component {
         return (
             <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                 {/* <FormItem {...formItemLayout}> */}
-                {/* <FormItem> */}
+                <FormItem>
                     <Select style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }} value={this.props.value} onChange={this.props.onChange} >
                         {this.props.renderOptions()}
                     </Select>
-                {/* </FormItem> */}
+                </FormItem>
             </Col>
         );
     }

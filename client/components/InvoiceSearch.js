@@ -73,9 +73,11 @@ class InvoiceSearch extends Component {
                     <FormItemTextInput value={this.state.StatusID} onChange={e => this.setState({ StatusID: e.target.value })} />
                 </Row>
                 <Row gutter={16}>
-                    <Col>
-                        <Button type="primary" style={{ width: '50%' }} size="large" onClick={() => this.search()}>Search</Button>
+                    <Col xs={12} sm={12} md={6} lg={6} xl={6} />
+                    <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                        <Button type="primary" style={{ width: '100%' }} size="large" onClick={() => this.search()}>Search</Button>
                     </Col>
+                    <Col xs={12} sm={12} md={6} lg={6} xl={6} />
                 </Row>
                 <Row gutter={16}>
                     <div className="errors">

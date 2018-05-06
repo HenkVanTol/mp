@@ -14,3 +14,4 @@
 - search button resize
 - validation
 - not logging out completely the first time
+- tests

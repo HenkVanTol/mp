@@ -56,6 +56,11 @@ class InvoiceEdit extends Component {
     }
     onSubmit(event) {
         event.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
+            }
+        });
         const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
         if (this.state.edit == true) {
             this.props.client.mutate({
@@ -131,17 +136,20 @@ class InvoiceEdit extends Component {
         }
     }
     render() {
+        console.log("invoiceedit props: ", this.props);
         if (this.props.data.loading) {
             return (
                 <div>Loading...</div>
             )
         }
         else {
+            console.log("props: ", this.props);
+            const { getFieldDecorator } = this.props.form;
             return (
                 <div>
                     <h2>Edit Invoice</h2>
-                    {/* <Form layout="inline" onSubmit={this.onSubmit.bind(this)}> */}
-                    {/* <Form layout="inline"> */}
+                    <Form layout="inline" onSubmit={this.onSubmit.bind(this)}>
+                        {/* <Form layout="inline"> */}
                         <Row>
                             <FormItemLabel value="Invoice Number: " />
                             {/* <FormItemTextInput value={this.state.InvoiceNumber} onChange={e => this.setState({ InvoiceNumber: e.target.value })} /> */}
@@ -165,8 +173,18 @@ class InvoiceEdit extends Component {
                             <FormItemLabel value="Current Status: " />
                             {/* <FormItemTextInput value={this.state.StatusDescription} onChange={e => this.setState({ StatusDescription: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.StatusDescription} />
-                            <FormItemLabel value="Value: " />
-                            <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} />
+                            {/* <FormItemLabel value="Value: " /> */}
+                            {/* <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} /> */}
+                            <FormItem label="Value" labelCol={{ span: 6 }} wrapperCol={{ span: 6 }}>
+                                {getFieldDecorator('value', {
+                                    rules: [{
+                                    required: true,
+                                    message: 'Please input an invoice value',
+                                    }],
+                                })(
+                                    <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }} value={this.state.value} onChange={e => this.setState({ Value: e.target.value })} />
+                                )}
+                            </FormItem>
                         </Row>
 
                         <Row>
@@ -179,15 +197,18 @@ class InvoiceEdit extends Component {
                         <Row>
                             <Col span={8} />
                             <Col span={8}>
-                                <Button type="primary" style={{ width: '100%' }} size="large" onClick={this.onSubmit.bind(this)} >Submit</Button>
-                                {/* htmlType="submit" */}
+                                <Button type="primary" style={{ width: '100%' }} size="large"
+                                    // onClick={this.onSubmit.bind(this)} 
+                                    htmlType="submit"
+                                >Submit
+                                </Button>
                             </Col>
                             <Col span={8} />
                             <div className="errors">
                                 {this.state.errors.map(error => <div key={error}>{error}</div>)}
                             </div>
                         </Row>
-                    {/* </Form> */}
+                    </Form>
                 </div>
             );
         }
@@ -196,4 +217,4 @@ class InvoiceEdit extends Component {
 // export default graphql(findById, {
 //     options: (props) => { return { variables: { id: props.params.id } } }
 // })(Invoice);
-export default withApollo(InvoiceEdit);
+export default withApollo(Form.create()(InvoiceEdit));
