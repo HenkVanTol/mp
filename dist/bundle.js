@@ -22894,73 +22894,76 @@ var InvoiceEdit = function (_Component) {
             this.props.form.validateFields(function (err, values) {
                 if (!err) {
                     console.log('Received values of form: ', values);
+
+                    var _state = _this3.state,
+                        InvoiceID = _state.InvoiceID,
+                        InvoiceNumber = _state.InvoiceNumber,
+                        ContractID = _state.ContractID,
+                        StatusID = _state.StatusID,
+                        DateRaised = _state.DateRaised,
+                        Value = _state.Value;
+
+                    if (_this3.state.edit == true) {
+                        _this3.props.client.mutate({
+                            mutation: _UpdateInvoice2.default,
+                            variables: { InvoiceID: InvoiceID, InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
+                        }).then(function () {
+                            _this3.props.client.query({
+                                query: _InvoiceByID2.default,
+                                variables: { InvoiceID: _this3.props.params.id },
+                                options: {
+                                    fetchPolicy: 'network-only'
+                                }
+                            }).then(function (result) {
+                                console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
+                                var invoice = result.data.InvoiceByID[0];
+                                if (invoice) {
+                                    _this3.mapState(invoice);
+                                }
+                                _toastr2.default.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
+                                // swal({
+                                //     position: 'top-end',
+                                //     type: 'success',
+                                //     title: 'Invoice updated',
+                                //     showConfirmButton: false,
+                                //     animation: false,
+                                //     imageWidth: 100,
+                                //     imageHeight: 50,
+                                //     timer: 1000
+                                // });
+                            });
+                        }).catch(function (res) {
+                            var errors = res.graphQLErrors.map(function (error) {
+                                return error.message;
+                            });
+                            _this3.setState({ errors: errors });
+                        });
+                    } else {
+                        _this3.props.client.mutate({
+                            mutation: _CreateInvoice2.default,
+                            variables: { InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
+                        }).then(function () {
+                            (0, _sweetalert2.default)({
+                                position: 'top-end',
+                                type: 'success',
+                                title: 'Invoice created',
+                                showConfirmButton: false,
+                                imageWidth: 100,
+                                imageHeight: 50,
+                                timer: 1000,
+                                animation: false
+                            });
+                        }).catch(function (res) {
+                            var errors = res.graphQLErrors.map(function (error) {
+                                return error.message;
+                            });
+                            _this3.setState({ errors: errors });
+                        });
+                    }
+                } else {
+                    console.log("Validation errors");
                 }
             });
-            var _state = this.state,
-                InvoiceID = _state.InvoiceID,
-                InvoiceNumber = _state.InvoiceNumber,
-                ContractID = _state.ContractID,
-                StatusID = _state.StatusID,
-                DateRaised = _state.DateRaised,
-                Value = _state.Value;
-
-            if (this.state.edit == true) {
-                this.props.client.mutate({
-                    mutation: _UpdateInvoice2.default,
-                    variables: { InvoiceID: InvoiceID, InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
-                }).then(function () {
-                    _this3.props.client.query({
-                        query: _InvoiceByID2.default,
-                        variables: { InvoiceID: _this3.props.params.id },
-                        options: {
-                            fetchPolicy: 'network-only'
-                        }
-                    }).then(function (result) {
-                        console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
-                        var invoice = result.data.InvoiceByID[0];
-                        if (invoice) {
-                            _this3.mapState(invoice);
-                        }
-                        _toastr2.default.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
-                        // swal({
-                        //     position: 'top-end',
-                        //     type: 'success',
-                        //     title: 'Invoice updated',
-                        //     showConfirmButton: false,
-                        //     animation: false,
-                        //     imageWidth: 100,
-                        //     imageHeight: 50,
-                        //     timer: 1000
-                        // });
-                    });
-                }).catch(function (res) {
-                    var errors = res.graphQLErrors.map(function (error) {
-                        return error.message;
-                    });
-                    _this3.setState({ errors: errors });
-                });
-            } else {
-                this.props.client.mutate({
-                    mutation: _CreateInvoice2.default,
-                    variables: { InvoiceNumber: InvoiceNumber, ContractID: ContractID, StatusID: StatusID, DateRaised: DateRaised, Value: Value }
-                }).then(function () {
-                    (0, _sweetalert2.default)({
-                        position: 'top-end',
-                        type: 'success',
-                        title: 'Invoice created',
-                        showConfirmButton: false,
-                        imageWidth: 100,
-                        imageHeight: 50,
-                        timer: 1000,
-                        animation: false
-                    });
-                }).catch(function (res) {
-                    var errors = res.graphQLErrors.map(function (error) {
-                        return error.message;
-                    });
-                    _this3.setState({ errors: errors });
-                });
-            }
         }
     }, {
         key: 'renderInvoiceStatuses',
@@ -23046,13 +23049,19 @@ var InvoiceEdit = function (_Component) {
                                 FormItem,
                                 { label: 'Value', labelCol: { span: 6 }, wrapperCol: { span: 6 } },
                                 getFieldDecorator('value', {
+                                    initialValue: this.state.Value,
+                                    valuePropName: 'value',
                                     rules: [{
                                         required: true,
                                         message: 'Please input an invoice value'
                                     }]
-                                })(_react2.default.createElement(_input2.default, { style: { width: '100%', marginRight: '8px', marginBottom: '8px' }, value: this.state.value, onChange: function onChange(e) {
+                                })(_react2.default.createElement(_input2.default, { style: { width: '100%', marginRight: '8px', marginBottom: '8px' }
+                                    //value={this.state.value} 
+                                    , onChange: function onChange(e) {
                                         return _this4.setState({ Value: e.target.value });
-                                    } }))
+                                    }
+                                    //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
+                                }))
                             )
                         ),
                         _react2.default.createElement(

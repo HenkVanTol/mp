@@ -59,63 +59,67 @@ class InvoiceEdit extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+
+                const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
+                if (this.state.edit == true) {
+                    this.props.client.mutate({
+                        mutation: update,
+                        variables: { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }
+                    }).then(() => {
+                        this.props.client.query({
+                            query: findById,
+                            variables: { InvoiceID: this.props.params.id },
+                            options: {
+                                fetchPolicy: 'network-only'
+                            }
+                        }).then((result) => {
+                            console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
+                            let invoice = result.data.InvoiceByID[0];
+                            if (invoice) {
+                                this.mapState(invoice);
+                            }
+                            toastr.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
+                            // swal({
+                            //     position: 'top-end',
+                            //     type: 'success',
+                            //     title: 'Invoice updated',
+                            //     showConfirmButton: false,
+                            //     animation: false,
+                            //     imageWidth: 100,
+                            //     imageHeight: 50,
+                            //     timer: 1000
+                            // });
+                        });
+                    }).catch(res => {
+                        const errors = res.graphQLErrors.map(error => error.message);
+                        this.setState({ errors });
+                    });
+                }
+                else {
+                    this.props.client.mutate({
+                        mutation: create,
+                        variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
+                    }).then(() => {
+                        swal({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Invoice created',
+                            showConfirmButton: false,
+                            imageWidth: 100,
+                            imageHeight: 50,
+                            timer: 1000,
+                            animation: false
+                        })
+                    }).catch(res => {
+                        const errors = res.graphQLErrors.map(error => error.message);
+                        this.setState({ errors });
+                    });
+                }
+            }
+            else {
+                console.log("Validation errors");
             }
         });
-        const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
-        if (this.state.edit == true) {
-            this.props.client.mutate({
-                mutation: update,
-                variables: { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            }).then(() => {
-                this.props.client.query({
-                    query: findById,
-                    variables: { InvoiceID: this.props.params.id },
-                    options: {
-                        fetchPolicy: 'network-only'
-                    }
-                }).then((result) => {
-                    console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
-                    let invoice = result.data.InvoiceByID[0];
-                    if (invoice) {
-                        this.mapState(invoice);
-                    }
-                    toastr.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
-                    // swal({
-                    //     position: 'top-end',
-                    //     type: 'success',
-                    //     title: 'Invoice updated',
-                    //     showConfirmButton: false,
-                    //     animation: false,
-                    //     imageWidth: 100,
-                    //     imageHeight: 50,
-                    //     timer: 1000
-                    // });
-                });
-            }).catch(res => {
-                const errors = res.graphQLErrors.map(error => error.message);
-                this.setState({ errors });
-            });
-        }
-        else {
-            this.props.client.mutate({
-                mutation: create,
-                variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            }).then(() => {
-                swal({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Invoice created',
-                    showConfirmButton: false,
-                    imageWidth: 100,
-                    imageHeight: 50,
-                    timer: 1000,
-                    animation: false
-                })
-            }).catch(res => {
-                const errors = res.graphQLErrors.map(error => error.message);
-                this.setState({ errors });
-            });
-        }
     }
     renderInvoiceStatuses() {
         if (!this.props.data.loading) {
@@ -177,12 +181,18 @@ class InvoiceEdit extends Component {
                             {/* <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} /> */}
                             <FormItem label="Value" labelCol={{ span: 6 }} wrapperCol={{ span: 6 }}>
                                 {getFieldDecorator('value', {
+                                    initialValue: this.state.Value,
+                                    valuePropName: 'value',
                                     rules: [{
-                                    required: true,
-                                    message: 'Please input an invoice value',
+                                        required: true,
+                                        message: 'Please input an invoice value',
                                     }],
                                 })(
-                                    <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }} value={this.state.value} onChange={e => this.setState({ Value: e.target.value })} />
+                                    <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }} 
+                                    //value={this.state.value} 
+                                    onChange={e => this.setState({ Value: e.target.value })} 
+                                    //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
+                                    />
                                 )}
                             </FormItem>
                         </Row>
