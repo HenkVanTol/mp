@@ -149,6 +149,30 @@ class InvoiceEdit extends Component {
         else {
             console.log("props: ", this.props);
             const { getFieldDecorator } = this.props.form;
+            const formItemLayout = {
+                // labelCol: {
+                //   xs: { span: 24 },
+                //   sm: { span: 24 },
+                //   md: { span: 12 },
+                //   lg: { span: 12 },
+                //   xl: { span: 12 },
+                // },
+                labelCol: {
+                    xs: { span: 24 },
+                    sm: { span: 24 },
+                    md: { span: 12 },
+                    lg: { span: 12 },
+                    xl: { span: 12 },
+                },
+                wrapperCol: {
+                    xs: { span: 12 },
+                    sm: { span: 12 },
+                    md: { span: 6 },
+                    lg: { span: 6 },
+                    xl: { span: 6 },
+                },
+            };
+            //xs={12} sm={12} md={6} lg={6} xl={6}
             return (
                 <div>
                     <h2>Edit Invoice</h2>
@@ -179,22 +203,27 @@ class InvoiceEdit extends Component {
                             <FormItemLabelBold value={this.state.StatusDescription} />
                             {/* <FormItemLabel value="Value: " /> */}
                             {/* <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} /> */}
-                            <FormItem label="Value" labelCol={{ span: 6 }} wrapperCol={{ span: 6 }}>
-                                {getFieldDecorator('value', {
-                                    initialValue: this.state.Value,
-                                    valuePropName: 'value',
-                                    rules: [{
-                                        required: true,
-                                        message: 'Please input an invoice value',
-                                    }],
-                                })(
-                                    <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }} 
-                                    //value={this.state.value} 
-                                    onChange={e => this.setState({ Value: e.target.value })} 
-                                    //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
-                                    />
-                                )}
-                            </FormItem>
+                            <FormItemLabel value="Value: " />
+                            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
+                                <FormItem>
+                                    {getFieldDecorator('value', {
+                                        initialValue: this.state.Value,
+                                        valuePropName: 'value',
+                                        rules: [{
+                                            required: true,
+                                            message: 'Please input an invoice value',
+                                        },
+                                        { type: 'string', message: 'ONLY numbers' }],
+                                    })(
+                                        <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }}
+                                            //value={this.state.value}
+                                            onChange={e => this.setState({ Value: e.target.value })}
+                                            type="number"
+                                        //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
+                                        />
+                                    )}
+                                </FormItem>
+                            </Col>
                         </Row>
 
                         <Row>
@@ -208,7 +237,7 @@ class InvoiceEdit extends Component {
                             <Col span={8} />
                             <Col span={8}>
                                 <Button type="primary" style={{ width: '100%' }} size="large"
-                                    // onClick={this.onSubmit.bind(this)} 
+                                    // onClick={this.onSubmit.bind(this)}
                                     htmlType="submit"
                                 >Submit
                                 </Button>

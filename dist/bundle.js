@@ -23007,6 +23007,30 @@ var InvoiceEdit = function (_Component) {
                 console.log("props: ", this.props);
                 var getFieldDecorator = this.props.form.getFieldDecorator;
 
+                var formItemLayout = {
+                    // labelCol: {
+                    //   xs: { span: 24 },
+                    //   sm: { span: 24 },
+                    //   md: { span: 12 },
+                    //   lg: { span: 12 },
+                    //   xl: { span: 12 },
+                    // },
+                    labelCol: {
+                        xs: { span: 24 },
+                        sm: { span: 24 },
+                        md: { span: 12 },
+                        lg: { span: 12 },
+                        xl: { span: 12 }
+                    },
+                    wrapperCol: {
+                        xs: { span: 12 },
+                        sm: { span: 12 },
+                        md: { span: 6 },
+                        lg: { span: 6 },
+                        xl: { span: 6 }
+                    }
+                };
+                //xs={12} sm={12} md={6} lg={6} xl={6}
                 return _react2.default.createElement(
                     'div',
                     null,
@@ -23045,23 +23069,29 @@ var InvoiceEdit = function (_Component) {
                             null,
                             _react2.default.createElement(_FormItemLabel2.default, { value: 'Current Status: ' }),
                             _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.StatusDescription }),
+                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Value: ' }),
                             _react2.default.createElement(
-                                FormItem,
-                                { label: 'Value', labelCol: { span: 6 }, wrapperCol: { span: 6 } },
-                                getFieldDecorator('value', {
-                                    initialValue: this.state.Value,
-                                    valuePropName: 'value',
-                                    rules: [{
-                                        required: true,
-                                        message: 'Please input an invoice value'
-                                    }]
-                                })(_react2.default.createElement(_input2.default, { style: { width: '100%', marginRight: '8px', marginBottom: '8px' }
-                                    //value={this.state.value} 
-                                    , onChange: function onChange(e) {
-                                        return _this4.setState({ Value: e.target.value });
-                                    }
-                                    //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
-                                }))
+                                _col2.default,
+                                { xs: 12, sm: 12, md: 6, lg: 6, xl: 6 },
+                                _react2.default.createElement(
+                                    FormItem,
+                                    null,
+                                    getFieldDecorator('value', {
+                                        initialValue: this.state.Value,
+                                        valuePropName: 'value',
+                                        rules: [{
+                                            required: true,
+                                            message: 'Please input an invoice value'
+                                        }, { type: 'string', message: 'ONLY numbers' }]
+                                    })(_react2.default.createElement(_input2.default, { style: { width: '100%', marginRight: '8px', marginBottom: '8px' }
+                                        //value={this.state.value}
+                                        , onChange: function onChange(e) {
+                                            return _this4.setState({ Value: e.target.value });
+                                        },
+                                        type: 'number'
+                                        //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
+                                    }))
+                                )
                             )
                         ),
                         _react2.default.createElement(
@@ -23084,7 +23114,7 @@ var InvoiceEdit = function (_Component) {
                                 _react2.default.createElement(
                                     _button2.default,
                                     { type: 'primary', style: { width: '100%' }, size: 'large'
-                                        // onClick={this.onSubmit.bind(this)} 
+                                        // onClick={this.onSubmit.bind(this)}
                                         , htmlType: 'submit'
                                     },
                                     'Submit'
