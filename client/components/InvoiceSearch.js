@@ -57,7 +57,6 @@ class InvoiceSearch extends Component {
                 fetchPolicy: 'network-only'
             }
         }).then((result) => {
-            console.log("result.data: ", result.data.InvoiceSearch);
             this.setState({ dataSource: result.data.InvoiceSearch });
         });
     }

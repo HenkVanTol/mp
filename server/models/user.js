@@ -23,14 +23,12 @@ function findByEmail(email) {
                 resolve(result.recordset[0]);
             })
             .catch(error => {
-                console.log("ERROR: ", error);
                 reject(error);
             });
     });
 }
 
 function insert(user, done) {
-    console.log("salt & hash password");
     bcrypt.genSalt(10, (err, salt) => {
         if (err) { return next(err); }
         bcrypt.hash(user.password, salt, null, (err, hash) => {

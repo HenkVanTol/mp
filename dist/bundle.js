@@ -22863,7 +22863,6 @@ var InvoiceEdit = function (_Component) {
                         fetchPolicy: 'network-only'
                     }
                 }).then(function (result) {
-                    console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
                     var invoice = result.data.InvoiceByID[0];
                     if (invoice) {
                         _this2.mapState(invoice);
@@ -22879,10 +22878,6 @@ var InvoiceEdit = function (_Component) {
                 ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
                 StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: (0, _moment2.default)(invoice.DateRaised),
                 errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
-            }, function () {
-                return console.log("setState done");
-            }, function () {
-                return console.log("setState error");
             });
         }
     }, {
@@ -22893,8 +22888,6 @@ var InvoiceEdit = function (_Component) {
             event.preventDefault();
             this.props.form.validateFields(function (err, values) {
                 if (!err) {
-                    console.log('Received values of form: ', values);
-
                     var _state = _this3.state,
                         InvoiceID = _state.InvoiceID,
                         InvoiceNumber = _state.InvoiceNumber,
@@ -22915,7 +22908,6 @@ var InvoiceEdit = function (_Component) {
                                     fetchPolicy: 'network-only'
                                 }
                             }).then(function (result) {
-                                console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
                                 var invoice = result.data.InvoiceByID[0];
                                 if (invoice) {
                                     _this3.mapState(invoice);
@@ -22996,7 +22988,6 @@ var InvoiceEdit = function (_Component) {
         value: function render() {
             var _this4 = this;
 
-            console.log("invoiceedit props: ", this.props);
             if (this.props.data.loading) {
                 return _react2.default.createElement(
                     'div',
@@ -23004,33 +22995,8 @@ var InvoiceEdit = function (_Component) {
                     'Loading...'
                 );
             } else {
-                console.log("props: ", this.props);
                 var getFieldDecorator = this.props.form.getFieldDecorator;
 
-                var formItemLayout = {
-                    // labelCol: {
-                    //   xs: { span: 24 },
-                    //   sm: { span: 24 },
-                    //   md: { span: 12 },
-                    //   lg: { span: 12 },
-                    //   xl: { span: 12 },
-                    // },
-                    labelCol: {
-                        xs: { span: 24 },
-                        sm: { span: 24 },
-                        md: { span: 12 },
-                        lg: { span: 12 },
-                        xl: { span: 12 }
-                    },
-                    wrapperCol: {
-                        xs: { span: 12 },
-                        sm: { span: 12 },
-                        md: { span: 6 },
-                        lg: { span: 6 },
-                        xl: { span: 6 }
-                    }
-                };
-                //xs={12} sm={12} md={6} lg={6} xl={6}
                 return _react2.default.createElement(
                     'div',
                     null,
@@ -23081,15 +23047,13 @@ var InvoiceEdit = function (_Component) {
                                         valuePropName: 'value',
                                         rules: [{
                                             required: true,
-                                            message: 'Please input an invoice value'
-                                        }, { type: 'string', message: 'ONLY numbers' }]
-                                    })(_react2.default.createElement(_input2.default, { style: { width: '100%', marginRight: '8px', marginBottom: '8px' }
-                                        //value={this.state.value}
-                                        , onChange: function onChange(e) {
+                                            message: 'Value is required'
+                                        }]
+                                    })(_react2.default.createElement(_input2.default, { style: { width: '100%', marginRight: '8px', marginBottom: '8px' },
+                                        onChange: function onChange(e) {
                                             return _this4.setState({ Value: e.target.value });
                                         },
                                         type: 'number'
-                                        //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
                                     }))
                                 )
                             )
@@ -23113,10 +23077,7 @@ var InvoiceEdit = function (_Component) {
                                 { span: 8 },
                                 _react2.default.createElement(
                                     _button2.default,
-                                    { type: 'primary', style: { width: '100%' }, size: 'large'
-                                        // onClick={this.onSubmit.bind(this)}
-                                        , htmlType: 'submit'
-                                    },
+                                    { type: 'primary', style: { width: '100%' }, size: 'large', htmlType: 'submit' },
                                     'Submit'
                                 )
                             ),
@@ -52247,7 +52208,6 @@ var InvoiceCreate = function (_Component) {
                         fetchPolicy: 'network-only'
                     }
                 }).then(function (result) {
-                    console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
                     var invoice = result.data.InvoiceByID[0];
                     if (invoice) {
                         _this2.mapState(invoice);
@@ -52263,10 +52223,6 @@ var InvoiceCreate = function (_Component) {
                 ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
                 StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: (0, _moment2.default)(invoice.DateRaised),
                 errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
-            }, function () {
-                return console.log("setState done");
-            }, function () {
-                return console.log("setState error");
             });
         }
     }, {
@@ -52295,7 +52251,6 @@ var InvoiceCreate = function (_Component) {
                             fetchPolicy: 'network-only'
                         }
                     }).then(function (result) {
-                        console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
                         var invoice = result.data.InvoiceByID[0];
                         if (invoice) {
                             _this3.mapState(invoice);
@@ -52675,7 +52630,6 @@ var InvoiceSearch = function (_Component) {
                     fetchPolicy: 'network-only'
                 }
             }).then(function (result) {
-                console.log("result.data: ", result.data.InvoiceSearch);
                 _this2.setState({ dataSource: result.data.InvoiceSearch });
             });
         }
@@ -52811,8 +52765,6 @@ var LoginForm = function (_Component) {
     _createClass(LoginForm, [{
         key: 'componentWillUpdate',
         value: function componentWillUpdate(nextProps) {
-            //console.log(this.props, nextProps) //the old, current set of props
-            //nextProps //next set of props when the component rerenders
             if (!this.props.data.user && nextProps.data.user) {
                 //redirect to dashboard
                 //user wasn't signed in but now is
@@ -52914,8 +52866,6 @@ var SignupForm = function (_Component) {
     _createClass(SignupForm, [{
         key: 'componentWillUpdate',
         value: function componentWillUpdate(nextProps) {
-            //console.log(this.props, nextProps) //the old, current set of props
-            //nextProps //next set of props when the component rerenders
             if (!this.props.data.user && nextProps.data.user) {
                 //redirect to dashboard!!!!
                 //user wasn't signed in but now is
@@ -65207,7 +65157,6 @@ var Header = function (_Component) {
 
         _this.state = { current: '' };
         _this.handleClick = function (e) {
-            console.log('click', e);
             _this.setState({
                 current: e.key
             });
@@ -65218,7 +65167,6 @@ var Header = function (_Component) {
     _createClass(Header, [{
         key: 'onLogoutClick',
         value: function onLogoutClick() {
-            console.log("logging out");
             this.props.mutate({
                 refetchQueries: [{ query: _CurrentUser2.default }]
             });
@@ -65369,7 +65317,6 @@ var SideMenu = function (_Component) {
 
         _this.state = { current: '', collapsed: false };
         _this.handleClick = function (e) {
-            console.log('click', e);
             _this.setState({
                 current: e.key
             });
@@ -65380,7 +65327,6 @@ var SideMenu = function (_Component) {
     _createClass(SideMenu, [{
         key: 'onCollapse',
         value: function onCollapse(collapsed) {
-            console.log(collapsed);
             this.setState({ collapsed: collapsed });
         }
     }, {

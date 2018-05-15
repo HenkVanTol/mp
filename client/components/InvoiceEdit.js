@@ -38,7 +38,6 @@ class InvoiceEdit extends Component {
                     fetchPolicy: 'network-only'
                 }
             }).then((result) => {
-                console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
                 let invoice = result.data.InvoiceByID[0];
                 if (invoice) {
                     this.mapState(invoice);
@@ -52,13 +51,12 @@ class InvoiceEdit extends Component {
             ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
             StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: moment(invoice.DateRaised),
             errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
-        }, () => console.log("setState done"), () => console.log("setState error"));
+        });
     }
     onSubmit(event) {
         event.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
 
                 const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
                 if (this.state.edit == true) {
@@ -73,7 +71,6 @@ class InvoiceEdit extends Component {
                                 fetchPolicy: 'network-only'
                             }
                         }).then((result) => {
-                            console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
                             let invoice = result.data.InvoiceByID[0];
                             if (invoice) {
                                 this.mapState(invoice);
@@ -140,57 +137,27 @@ class InvoiceEdit extends Component {
         }
     }
     render() {
-        console.log("invoiceedit props: ", this.props);
         if (this.props.data.loading) {
             return (
                 <div>Loading...</div>
             )
         }
         else {
-            console.log("props: ", this.props);
             const { getFieldDecorator } = this.props.form;
-            const formItemLayout = {
-                // labelCol: {
-                //   xs: { span: 24 },
-                //   sm: { span: 24 },
-                //   md: { span: 12 },
-                //   lg: { span: 12 },
-                //   xl: { span: 12 },
-                // },
-                labelCol: {
-                    xs: { span: 24 },
-                    sm: { span: 24 },
-                    md: { span: 12 },
-                    lg: { span: 12 },
-                    xl: { span: 12 },
-                },
-                wrapperCol: {
-                    xs: { span: 12 },
-                    sm: { span: 12 },
-                    md: { span: 6 },
-                    lg: { span: 6 },
-                    xl: { span: 6 },
-                },
-            };
-            //xs={12} sm={12} md={6} lg={6} xl={6}
             return (
                 <div>
                     <h2>Edit Invoice</h2>
                     <Form layout="inline" onSubmit={this.onSubmit.bind(this)}>
-                        {/* <Form layout="inline"> */}
                         <Row>
                             <FormItemLabel value="Invoice Number: " />
-                            {/* <FormItemTextInput value={this.state.InvoiceNumber} onChange={e => this.setState({ InvoiceNumber: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.InvoiceNumber} />
                             <FormItemLabel value="Contract: " />
-                            {/* <FormItemTextInput value={this.state.ContractID} onChange={e => this.setState({ ContractID: e.target.value })} /> */}
                             <FormItemCombo value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })}
                                 renderOptions={this.renderContracts.bind(this)} />
                         </Row>
 
                         <Row>
                             <FormItemLabel value="Contract Description: " />
-                            {/* <FormItemTextInput value={this.state.ContractDescription} onChange={e => this.setState({ ContractDescription: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.ContractDescription} />
                             <FormItemLabel value="Status: " />
                             <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
@@ -199,10 +166,7 @@ class InvoiceEdit extends Component {
 
                         <Row>
                             <FormItemLabel value="Current Status: " />
-                            {/* <FormItemTextInput value={this.state.StatusDescription} onChange={e => this.setState({ StatusDescription: e.target.value })} /> */}
                             <FormItemLabelBold value={this.state.StatusDescription} />
-                            {/* <FormItemLabel value="Value: " /> */}
-                            {/* <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} /> */}
                             <FormItemLabel value="Value: " />
                             <Col xs={12} sm={12} md={6} lg={6} xl={6}>
                                 <FormItem>
@@ -211,15 +175,12 @@ class InvoiceEdit extends Component {
                                         valuePropName: 'value',
                                         rules: [{
                                             required: true,
-                                            message: 'Please input an invoice value',
-                                        },
-                                        { type: 'string', message: 'ONLY numbers' }],
+                                            message: 'Value is required',
+                                        }],
                                     })(
                                         <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }}
-                                            //value={this.state.value}
                                             onChange={e => this.setState({ Value: e.target.value })}
                                             type="number"
-                                        //onChange={e => this.props.form.setFieldsValue({ Value: 999})}
                                         />
                                     )}
                                 </FormItem>
@@ -236,11 +197,7 @@ class InvoiceEdit extends Component {
                         <Row>
                             <Col span={8} />
                             <Col span={8}>
-                                <Button type="primary" style={{ width: '100%' }} size="large"
-                                    // onClick={this.onSubmit.bind(this)}
-                                    htmlType="submit"
-                                >Submit
-                                </Button>
+                                <Button type="primary" style={{ width: '100%' }} size="large" htmlType="submit">Submit</Button>
                             </Col>
                             <Col span={8} />
                             <div className="errors">

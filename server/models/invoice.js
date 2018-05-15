@@ -50,7 +50,6 @@ function UpdateInvoice(Invoice) {
             .query("update ServiceBasedBilling.Invoice set InvoiceNumber = @InvoiceNumber, ContractHeaderID = @ContractID, InvoiceStatusID = @StatusID, DateRaised = @DateRaised, Value = @Value where InvoiceID = @InvoiceID")
             .then(result => resolve(result.recordset))
             .catch(error => {
-                console.log("error: ", error);
                 reject(error)
             });
     });

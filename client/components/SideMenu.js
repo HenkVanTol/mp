@@ -12,14 +12,12 @@ class SideMenu extends Component {
         super(props);
         this.state = { current: '', collapsed: false };
         this.handleClick = (e) => {
-            console.log('click', e);
             this.setState({
                 current: e.key,
             });
         }
     }
     onCollapse(collapsed) {
-        console.log(collapsed);
         this.setState({ collapsed });
     }
     render() {

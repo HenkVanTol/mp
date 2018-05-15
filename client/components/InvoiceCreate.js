@@ -38,7 +38,6 @@ class InvoiceCreate extends Component {
                     fetchPolicy: 'network-only'
                 }
             }).then((result) => {
-                console.log("InvoiceByID result (mount): ", result.data.InvoiceByID[0]);
                 let invoice = result.data.InvoiceByID[0];
                 if (invoice) {
                     this.mapState(invoice);
@@ -52,7 +51,7 @@ class InvoiceCreate extends Component {
             ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
             StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: moment(invoice.DateRaised),
             errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
-        }, () => console.log("setState done"), () => console.log("setState error"));
+        });
     }
     onSubmit(event) {
         event.preventDefault();
@@ -69,7 +68,6 @@ class InvoiceCreate extends Component {
                         fetchPolicy: 'network-only'
                     }
                 }).then((result) => {
-                    console.log("InvoiceByID result: ", result.data.InvoiceByID[0]);
                     let invoice = result.data.InvoiceByID[0];
                     if (invoice) {
                         this.mapState(invoice);

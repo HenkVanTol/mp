@@ -13,8 +13,6 @@ class LoginForm extends Component {
     }
 
     componentWillUpdate(nextProps) {
-        //console.log(this.props, nextProps) //the old, current set of props
-        //nextProps //next set of props when the component rerenders
         if (!this.props.data.user && nextProps.data.user) {
             //redirect to dashboard
             //user wasn't signed in but now is

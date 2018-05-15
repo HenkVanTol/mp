@@ -14,14 +14,12 @@ class Header extends Component {
 
         this.state = { current: '' };
         this.handleClick = (e) => {
-            console.log('click', e);
             this.setState({
                 current: e.key,
             });
         }
     }
     onLogoutClick() {
-        console.log("logging out");
         this.props.mutate({
             refetchQueries: [{ query }]
         });
