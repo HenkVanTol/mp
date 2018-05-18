@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { graphql, withApollo } from 'react-apollo';
 import moment from 'moment';
-import { Form, Row, Col, Input, Button, DatePicker, Select } from 'antd';
+import { Form, Row, Col, Input, Button, DatePicker, Select, Label } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import swal from 'sweetalert2'
@@ -144,32 +144,63 @@ class InvoiceEdit extends Component {
         }
         else {
             const { getFieldDecorator } = this.props.form;
+            const formItemLayout = {
+                labelCol: {
+                    xs: { span: 12 },
+                    sm: { span: 12 },
+                    md: { span: 6 },
+                    lg: { span: 6 },
+                    xl: { span: 6 }
+                },
+                wrapperCol: {
+                    xs: { span: 12 },
+                    sm: { span: 12 },
+                    md: { span: 6 },
+                    lg: { span: 6 },
+                    xl: { span: 6 }
+                },
+            };
+            // const formItemLayout = {
+            //     wrapperCol: { span: 200 },
+            //     labelCol: { span: 200 },
+            // };
+            // const formItemLayout = {
+            //     labelCol: { span: 6 },
+            //     wrapperCol: { span: 14 },
+            //   };
             return (
                 <div>
                     <h2>Edit Invoice</h2>
-                    <Form layout="inline" onSubmit={this.onSubmit.bind(this)}>
-                        <Row>
+                    <Form onSubmit={this.onSubmit.bind(this)}>
+                        {/* <Row>
                             <FormItemLabel value="Invoice Number: " />
                             <FormItemLabelBold value={this.state.InvoiceNumber} />
                             <FormItemLabel value="Contract: " />
                             <FormItemCombo value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })}
                                 renderOptions={this.renderContracts.bind(this)} />
-                        </Row>
+                        </Row> */}
 
                         <Row>
-                            <FormItemLabel value="Contract Description: " />
-                            <FormItemLabelBold value={this.state.ContractDescription} />
-                            <FormItemLabel value="Status: " />
-                            <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
-                                renderOptions={this.renderInvoiceStatuses.bind(this)} />
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                                {/* <FormItemLabel value="Contract Description: " /> */}
+                                {/* <FormItemLabelBold value={this.state.ContractDescription} /> */}
+                                {/* <FormItemLabel value="Status: " /> */}
+                                <FormItem label="Status" {...formItemLayout}>
+                                    <Select value={this.props.value} onChange={this.props.onChange} >
+                                        {this.renderInvoiceStatuses()}
+                                    </Select>
+                                </FormItem>
+                                {/* <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
+                                renderOptions={this.renderInvoiceStatuses.bind(this)} /> */}
+                            </Col>
                         </Row>
 
-                        <Row>
+                        {/* <Row>
                             <FormItemLabel value="Current Status: " />
                             <FormItemLabelBold value={this.state.StatusDescription} />
                             <FormItemLabel value="Value: " />
                             <Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                                <FormItem>
+                                <FormItem {...formItemLayout}>
                                     {getFieldDecorator('value', {
                                         initialValue: this.state.Value,
                                         valuePropName: 'value',
@@ -203,7 +234,7 @@ class InvoiceEdit extends Component {
                             <div className="errors">
                                 {this.state.errors.map(error => <div key={error}>{error}</div>)}
                             </div>
-                        </Row>
+                        </Row> */}
                     </Form>
                 </div>
             );

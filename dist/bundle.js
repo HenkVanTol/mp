@@ -22733,21 +22733,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _button = __webpack_require__(65);
+var _row = __webpack_require__(104);
 
-var _button2 = _interopRequireDefault(_button);
+var _row2 = _interopRequireDefault(_row);
 
 var _col = __webpack_require__(40);
 
 var _col2 = _interopRequireDefault(_col);
-
-var _input = __webpack_require__(137);
-
-var _input2 = _interopRequireDefault(_input);
-
-var _row = __webpack_require__(104);
-
-var _row2 = _interopRequireDefault(_row);
 
 var _select = __webpack_require__(86);
 
@@ -22757,15 +22749,13 @@ var _form = __webpack_require__(36);
 
 var _form2 = _interopRequireDefault(_form);
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-__webpack_require__(66);
+__webpack_require__(105);
 
 __webpack_require__(41);
-
-__webpack_require__(55);
-
-__webpack_require__(105);
 
 __webpack_require__(106);
 
@@ -22986,8 +22976,6 @@ var InvoiceEdit = function (_Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this4 = this;
-
             if (this.props.data.loading) {
                 return _react2.default.createElement(
                     'div',
@@ -22997,6 +22985,30 @@ var InvoiceEdit = function (_Component) {
             } else {
                 var getFieldDecorator = this.props.form.getFieldDecorator;
 
+                var formItemLayout = {
+                    labelCol: {
+                        xs: { span: 12 },
+                        sm: { span: 12 },
+                        md: { span: 6 },
+                        lg: { span: 6 },
+                        xl: { span: 6 }
+                    },
+                    wrapperCol: {
+                        xs: { span: 12 },
+                        sm: { span: 12 },
+                        md: { span: 6 },
+                        lg: { span: 6 },
+                        xl: { span: 6 }
+                    }
+                };
+                // const formItemLayout = {
+                //     wrapperCol: { span: 200 },
+                //     labelCol: { span: 200 },
+                // };
+                // const formItemLayout = {
+                //     labelCol: { span: 6 },
+                //     wrapperCol: { span: 14 },
+                //   };
                 return _react2.default.createElement(
                     'div',
                     null,
@@ -23007,91 +23019,22 @@ var InvoiceEdit = function (_Component) {
                     ),
                     _react2.default.createElement(
                         _form2.default,
-                        { layout: 'inline', onSubmit: this.onSubmit.bind(this) },
+                        { onSubmit: this.onSubmit.bind(this) },
                         _react2.default.createElement(
                             _row2.default,
                             null,
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Invoice Number: ' }),
-                            _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.InvoiceNumber }),
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract: ' }),
-                            _react2.default.createElement(_FormItemCombo2.default, { value: this.state.ContractID, onChange: function onChange(value) {
-                                    return _this4.setState({ ContractID: value });
-                                },
-                                renderOptions: this.renderContracts.bind(this) })
-                        ),
-                        _react2.default.createElement(
-                            _row2.default,
-                            null,
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Contract Description: ' }),
-                            _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.ContractDescription }),
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Status: ' }),
-                            _react2.default.createElement(_FormItemCombo2.default, { value: this.state.StatusID, onChange: function onChange(value) {
-                                    return _this4.setState({ StatusID: value });
-                                },
-                                renderOptions: this.renderInvoiceStatuses.bind(this) })
-                        ),
-                        _react2.default.createElement(
-                            _row2.default,
-                            null,
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Current Status: ' }),
-                            _react2.default.createElement(_FormItemLabelBold2.default, { value: this.state.StatusDescription }),
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Value: ' }),
                             _react2.default.createElement(
                                 _col2.default,
-                                { xs: 12, sm: 12, md: 6, lg: 6, xl: 6 },
+                                { xs: 24, sm: 24, md: 12, lg: 12, xl: 12 },
                                 _react2.default.createElement(
                                     FormItem,
-                                    null,
-                                    getFieldDecorator('value', {
-                                        initialValue: this.state.Value,
-                                        valuePropName: 'value',
-                                        rules: [{
-                                            required: true,
-                                            message: 'Value is required'
-                                        }]
-                                    })(_react2.default.createElement(_input2.default, { style: { width: '100%', marginRight: '8px', marginBottom: '8px' },
-                                        onChange: function onChange(e) {
-                                            return _this4.setState({ Value: e.target.value });
-                                        },
-                                        type: 'number'
-                                    }))
+                                    _extends({ label: 'Status' }, formItemLayout),
+                                    _react2.default.createElement(
+                                        _select2.default,
+                                        { value: this.props.value, onChange: this.props.onChange },
+                                        this.renderInvoiceStatuses()
+                                    )
                                 )
-                            )
-                        ),
-                        _react2.default.createElement(
-                            _row2.default,
-                            null,
-                            _react2.default.createElement(_FormItemLabel2.default, { value: 'Date Raised: ' }),
-                            _react2.default.createElement(_FormItemDatePicker2.default, { value: this.state.DateRaised,
-                                onChange: function onChange(date, dateString) {
-                                    _this4.setState({ DateRaised: date });
-                                } })
-                        ),
-                        _react2.default.createElement('br', null),
-                        _react2.default.createElement(
-                            _row2.default,
-                            null,
-                            _react2.default.createElement(_col2.default, { span: 8 }),
-                            _react2.default.createElement(
-                                _col2.default,
-                                { span: 8 },
-                                _react2.default.createElement(
-                                    _button2.default,
-                                    { type: 'primary', style: { width: '100%' }, size: 'large', htmlType: 'submit' },
-                                    'Submit'
-                                )
-                            ),
-                            _react2.default.createElement(_col2.default, { span: 8 }),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'errors' },
-                                this.state.errors.map(function (error) {
-                                    return _react2.default.createElement(
-                                        'div',
-                                        { key: error },
-                                        error
-                                    );
-                                })
                             )
                         )
                     )
@@ -25634,8 +25577,8 @@ var FormItemCombo = function (_Component) {
         key: 'render',
         value: function render() {
             var formItemLayout = {
-                wrapperCol: { span: 14 },
-                labelCol: { span: 6 }
+                wrapperCol: { span: 40 },
+                labelCol: { span: 20 }
             };
             return _react2.default.createElement(
                 _col2.default,

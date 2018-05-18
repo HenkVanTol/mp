@@ -5,8 +5,8 @@ const FormItem = Form.Item;
 class FormItemCombo extends Component {
     render() {
         const formItemLayout = {
-            wrapperCol: { span: 14 },
-            labelCol: { span: 6 },
+            wrapperCol: { span: 40 },
+            labelCol: { span: 20 },
         };
         return (
             <Col xs={12} sm={12} md={6} lg={6} xl={6}>
