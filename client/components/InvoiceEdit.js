@@ -186,21 +186,15 @@ class InvoiceEdit extends Component {
                                 {/* <FormItemLabelBold value={this.state.ContractDescription} /> */}
                                 {/* <FormItemLabel value="Status: " /> */}
                                 <FormItem label="Status" {...formItemLayout}>
-                                    <Select value={this.props.value} onChange={this.props.onChange} >
+                                    <Select value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })} >
                                         {this.renderInvoiceStatuses()}
                                     </Select>
                                 </FormItem>
                                 {/* <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
                                 renderOptions={this.renderInvoiceStatuses.bind(this)} /> */}
                             </Col>
-                        </Row>
-
-                        {/* <Row>
-                            <FormItemLabel value="Current Status: " />
-                            <FormItemLabelBold value={this.state.StatusDescription} />
-                            <FormItemLabel value="Value: " />
-                            <Col xs={12} sm={12} md={6} lg={6} xl={6}>
-                                <FormItem {...formItemLayout}>
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                                <FormItem label="Value" {...formItemLayout}>
                                     {getFieldDecorator('value', {
                                         initialValue: this.state.Value,
                                         valuePropName: 'value',
@@ -219,10 +213,33 @@ class InvoiceEdit extends Component {
                         </Row>
 
                         <Row>
+                            {/* <FormItemLabel value="Current Status: " />
+                            <FormItemLabelBold value={this.state.StatusDescription} />
+                            <FormItemLabel value="Value: " /> 
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                                <FormItem label="Value" {...formItemLayout}>
+                                    {getFieldDecorator('value', {
+                                        initialValue: this.state.Value,
+                                        valuePropName: 'value',
+                                        rules: [{
+                                            required: true,
+                                            message: 'Value is required',
+                                        }],
+                                    })(
+                                        <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }}
+                                            onChange={e => this.setState({ Value: e.target.value })}
+                                            type="number"
+                                        />
+                                    )}
+                                </FormItem>
+                            </Col>*/}
+                        </Row>
+
+                        {/* <Row>
                             <FormItemLabel value="Date Raised: " />
                             <FormItemDatePicker value={this.state.DateRaised}
                                 onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
-                        </Row>
+                        </Row> */}
                         <br>
                         </br>
                         <Row>
@@ -234,7 +251,7 @@ class InvoiceEdit extends Component {
                             <div className="errors">
                                 {this.state.errors.map(error => <div key={error}>{error}</div>)}
                             </div>
-                        </Row> */}
+                        </Row>
                     </Form>
                 </div>
             );
