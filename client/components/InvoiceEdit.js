@@ -76,16 +76,6 @@ class InvoiceEdit extends Component {
                                 this.mapState(invoice);
                             }
                             toastr.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
-                            // swal({
-                            //     position: 'top-end',
-                            //     type: 'success',
-                            //     title: 'Invoice updated',
-                            //     showConfirmButton: false,
-                            //     animation: false,
-                            //     imageWidth: 100,
-                            //     imageHeight: 50,
-                            //     timer: 1000
-                            // });
                         });
                     }).catch(res => {
                         const errors = res.graphQLErrors.map(error => error.message);
@@ -160,62 +150,49 @@ class InvoiceEdit extends Component {
                     xl: { span: 6 }
                 },
             };
-            // const formItemLayout = {
-            //     wrapperCol: { span: 200 },
-            //     labelCol: { span: 200 },
-            // };
-            // const formItemLayout = {
-            //     labelCol: { span: 6 },
-            //     wrapperCol: { span: 14 },
-            //   };
             return (
                 <div>
                     <h2>Edit Invoice</h2>
                     <Form onSubmit={this.onSubmit.bind(this)}>
                         {/* <Row>
-                            <FormItemLabel value="Invoice Number: " />
-                            <FormItemLabelBold value={this.state.InvoiceNumber} />
                             <FormItemLabel value="Contract: " />
                             <FormItemCombo value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })}
                                 renderOptions={this.renderContracts.bind(this)} />
                         </Row> */}
-
                         <Row>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                                {/* <FormItemLabel value="Contract Description: " /> */}
-                                {/* <FormItemLabelBold value={this.state.ContractDescription} /> */}
-                                {/* <FormItemLabel value="Status: " /> */}
+                                <FormItem label="Invoice Number" {...formItemLayout}>
+                                    <span style={{ fontWeight: 'bold' }}>{this.state.InvoiceNumber}</span>
+                                </FormItem>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                                <FormItem label="Contract" {...formItemLayout}>
+                                    <Select value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })} >
+                                        {this.renderContracts()}
+                                    </Select>
+                                </FormItem>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                                <FormItem label="Contract Description" {...formItemLayout}>
+                                    <span style={{ fontWeight: 'bold' }}>{this.state.ContractDescription}</span>
+                                </FormItem>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                                 <FormItem label="Status" {...formItemLayout}>
                                     <Select value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })} >
                                         {this.renderInvoiceStatuses()}
                                     </Select>
                                 </FormItem>
-                                {/* <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
-                                renderOptions={this.renderInvoiceStatuses.bind(this)} /> */}
-                            </Col>
-                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-                                <FormItem label="Value" {...formItemLayout}>
-                                    {getFieldDecorator('value', {
-                                        initialValue: this.state.Value,
-                                        valuePropName: 'value',
-                                        rules: [{
-                                            required: true,
-                                            message: 'Value is required',
-                                        }],
-                                    })(
-                                        <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }}
-                                            onChange={e => this.setState({ Value: e.target.value })}
-                                            type="number"
-                                        />
-                                    )}
-                                </FormItem>
                             </Col>
                         </Row>
-
                         <Row>
-                            {/* <FormItemLabel value="Current Status: " />
-                            <FormItemLabelBold value={this.state.StatusDescription} />
-                            <FormItemLabel value="Value: " /> 
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                                <FormItem label="Current Status" {...formItemLayout}>
+                                    <span style={{ fontWeight: 'bold' }}>{this.state.StatusDescription}</span>
+                                </FormItem>
+                            </Col>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                                 <FormItem label="Value" {...formItemLayout}>
                                     {getFieldDecorator('value', {
@@ -232,14 +209,15 @@ class InvoiceEdit extends Component {
                                         />
                                     )}
                                 </FormItem>
-                            </Col>*/}
+                            </Col>
                         </Row>
-
-                        {/* <Row>
-                            <FormItemLabel value="Date Raised: " />
-                            <FormItemDatePicker value={this.state.DateRaised}
-                                onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
-                        </Row> */}
+                        <Row>
+                            <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                                <FormItem label="Date Raised" {...formItemLayout}>
+                                    <DatePicker style={{ width: '100%' }} value={this.state.DateRaised} onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
+                                </FormItem>
+                            </Col>
+                        </Row>
                         <br>
                         </br>
                         <Row>
