@@ -138,14 +138,14 @@ class InvoiceEdit extends Component {
                 labelCol: {
                     xs: { span: 12 },
                     sm: { span: 12 },
-                    md: { span: 6 },
+                    md: { span: 12 },
                     lg: { span: 6 },
                     xl: { span: 6 }
                 },
                 wrapperCol: {
                     xs: { span: 12 },
                     sm: { span: 12 },
-                    md: { span: 6 },
+                    md: { span: 12 },
                     lg: { span: 6 },
                     xl: { span: 6 }
                 },
@@ -153,7 +153,7 @@ class InvoiceEdit extends Component {
             return (
                 <div>
                     <h2>Edit Invoice</h2>
-                    <Form onSubmit={this.onSubmit.bind(this)}>
+                    <Form onSubmit={this.onSubmit.bind(this)} className="ant-advanced-search-form">
                         {/* <Row>
                             <FormItemLabel value="Contract: " />
                             <FormItemCombo value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })}
@@ -203,10 +203,7 @@ class InvoiceEdit extends Component {
                                             message: 'Value is required',
                                         }],
                                     })(
-                                        <Input style={{ width: '100%', marginRight: '8px', marginBottom: '8px' }}
-                                            onChange={e => this.setState({ Value: e.target.value })}
-                                            type="number"
-                                        />
+                                        <Input onChange={e => this.setState({ Value: e.target.value })} type="number" />
                                     )}
                                 </FormItem>
                             </Col>
@@ -214,7 +211,7 @@ class InvoiceEdit extends Component {
                         <Row>
                             <Col xs={24} sm={24} md={12} lg={12} xl={12}>
                                 <FormItem label="Date Raised" {...formItemLayout}>
-                                    <DatePicker style={{ width: '100%' }} value={this.state.DateRaised} onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
+                                    <DatePicker value={this.state.DateRaised} onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
                                 </FormItem>
                             </Col>
                         </Row>

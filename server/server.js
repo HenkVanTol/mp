@@ -16,7 +16,7 @@ const app = express();
 const options = {
   user: 'sa',
   password: '',
-  server: '', 
+  server: '',
   database: 'MultiPick',
   // options: {
   //     encrypt: true // Use this if you're on Windows Azure
