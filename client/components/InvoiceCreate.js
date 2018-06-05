@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import { graphql, withApollo } from 'react-apollo';
 import moment from 'moment';
-import { Form, Row, Col, Input, Button, DatePicker, Select } from 'antd';
+import { Form, Row, Col, Input, Button, DatePicker, Select, Label } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
-import swal from 'sweetalert2'
-
-import FormItemTextInput from './common/FormItemTextInput';
-import FormItemCombo from './common/FormItemCombo';
-import FormItemLabel from './common/FormItemLabel';
-import FormItemLabelBold from './common/FormItemLabelBold';
-import FormItemDatePicker from './common/FormItemDatePicker';
 
 import create from '../mutations/CreateInvoice';
 import findById from '../queries/InvoiceByID';
@@ -55,60 +48,58 @@ class InvoiceCreate extends Component {
     }
     onSubmit(event) {
         event.preventDefault();
-        const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
-        if (this.state.edit == true) {
-            this.props.client.mutate({
-                mutation: update,
-                variables: { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            }).then(() => {
-                this.props.client.query({
-                    query: findById,
-                    variables: { InvoiceID: this.props.params.id },
-                    options: {
-                        fetchPolicy: 'network-only'
-                    }
-                }).then((result) => {
-                    let invoice = result.data.InvoiceByID[0];
-                    if (invoice) {
-                        this.mapState(invoice);
-                    }
-                    toastr.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
-                    // swal({
-                    //     position: 'top-end',
-                    //     type: 'success',
-                    //     title: 'Invoice updated',
-                    //     showConfirmButton: false,
-                    //     animation: false,
-                    //     imageWidth: 100,
-                    //     imageHeight: 50,
-                    //     timer: 1000
-                    // });
-                });
-            }).catch(res => {
-                const errors = res.graphQLErrors.map(error => error.message);
-                this.setState({ errors });
-            });
-        }
-        else {
-            this.props.client.mutate({
-                mutation: create,
-                variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
-            }).then(() => {
-                swal({
-                    position: 'top-end',
-                    type: 'success',
-                    title: 'Invoice created',
-                    showConfirmButton: false,
-                    imageWidth: 100,
-                    imageHeight: 50,
-                    timer: 1000,
-                    animation: false
-                })
-            }).catch(res => {
-                const errors = res.graphQLErrors.map(error => error.message);
-                this.setState({ errors });
-            });
-        }
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+
+                const { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value } = this.state;
+                if (this.state.edit == true) {
+                    this.props.client.mutate({
+                        mutation: update,
+                        variables: { InvoiceID, InvoiceNumber, ContractID, StatusID, DateRaised, Value }
+                    }).then(() => {
+                        this.props.client.query({
+                            query: findById,
+                            variables: { InvoiceID: this.props.params.id },
+                            options: {
+                                fetchPolicy: 'network-only'
+                            }
+                        }).then((result) => {
+                            let invoice = result.data.InvoiceByID[0];
+                            if (invoice) {
+                                this.mapState(invoice);
+                            }
+                            toastr.success('Invoice Updated', 'Edit Invoice', { timeOut: 1000 });
+                        });
+                    }).catch(res => {
+                        const errors = res.graphQLErrors.map(error => error.message);
+                        this.setState({ errors });
+                    });
+                }
+                else {
+                    this.props.client.mutate({
+                        mutation: create,
+                        variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
+                    }).then(() => {
+                        swal({
+                            position: 'top-end',
+                            type: 'success',
+                            title: 'Invoice created',
+                            showConfirmButton: false,
+                            imageWidth: 100,
+                            imageHeight: 50,
+                            timer: 1000,
+                            animation: false
+                        })
+                    }).catch(res => {
+                        const errors = res.graphQLErrors.map(error => error.message);
+                        this.setState({ errors });
+                    });
+                }
+            }
+            else {
+                console.log("Validation errors");
+            }
+        });
     }
     renderInvoiceStatuses() {
         if (!this.props.data.loading) {
@@ -135,63 +126,123 @@ class InvoiceCreate extends Component {
             )
         }
         else {
+            const { getFieldDecorator } = this.props.form;
+            const formItemLayout = {
+                labelCol: {
+                    xs: { span: 12 },
+                    sm: { span: 12 },
+                    md: { span: 12 },
+                    lg: { span: 6 },
+                    xl: { span: 6 }
+                },
+                wrapperCol: {
+                    xs: { span: 12 },
+                    sm: { span: 12 },
+                    md: { span: 12 },
+                    lg: { span: 6 },
+                    xl: { span: 6 }
+                },
+            };
+            const colLayout = {
+                xs: { span: 24 },
+                sm: { span: 24 },
+                md: { span: 12 },
+                xl: { span: 12 },
+            };
             return (
                 <div>
-                    <h2>Edit Invoice</h2>
-                    {/* <Form layout="inline" onSubmit={this.onSubmit.bind(this)}> */}
-                    {/* <Form layout="inline"> */}
-                        <Row>
-                            <FormItemLabel value="Invoice Number: " />
-                            {/* <FormItemTextInput value={this.state.InvoiceNumber} onChange={e => this.setState({ InvoiceNumber: e.target.value })} /> */}
-                            <FormItemLabelBold value={this.state.InvoiceNumber} />
+                    <h2>Create Invoice</h2>
+                    <Form onSubmit={this.onSubmit.bind(this)} className="ant-advanced-search-form">
+                        {/* <Row>
                             <FormItemLabel value="Contract: " />
-                            {/* <FormItemTextInput value={this.state.ContractID} onChange={e => this.setState({ ContractID: e.target.value })} /> */}
                             <FormItemCombo value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })}
                                 renderOptions={this.renderContracts.bind(this)} />
-                        </Row>
-
+                        </Row> */}
                         <Row>
-                            <FormItemLabel value="Contract Description: " />
-                            {/* <FormItemTextInput value={this.state.ContractDescription} onChange={e => this.setState({ ContractDescription: e.target.value })} /> */}
-                            <FormItemLabelBold value={this.state.ContractDescription} />
-                            <FormItemLabel value="Status: " />
-                            <FormItemCombo value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })}
-                                renderOptions={this.renderInvoiceStatuses.bind(this)} />
+                            <Col {...colLayout}>
+                                <FormItem label="Invoice Number" {...formItemLayout}>
+                                    {
+                                        this.props.params.id > 0 ?
+                                            <span style={{ fontWeight: 'bold' }}>{this.state.InvoiceNumber}</span> :
+                                            getFieldDecorator('invoiceNumber', {
+                                                initialValue: this.state.InvoiceNumber,
+                                                valuePropName: 'value',
+                                                rules: [{
+                                                    required: true,
+                                                    message: 'Invoice Number is required',
+                                                }],
+                                            })(
+                                                <Input onChange={e => this.setState({ InvoiceNumber: e.target.value })} />
+                                            )
+                                    }
+                                </FormItem>
+                            </Col>
+                            <Col {...colLayout}>
+                                <FormItem label="Contract" {...formItemLayout}>
+                                    <Select value={this.state.ContractID} onChange={(value) => this.setState({ ContractID: value })} >
+                                        {this.renderContracts()}
+                                    </Select>
+                                </FormItem>
+                            </Col>
                         </Row>
-
                         <Row>
-                            <FormItemLabel value="Current Status: " />
-                            {/* <FormItemTextInput value={this.state.StatusDescription} onChange={e => this.setState({ StatusDescription: e.target.value })} /> */}
-                            <FormItemLabelBold value={this.state.StatusDescription} />
-                            <FormItemLabel value="Value: " />
-                            <FormItemTextInput value={this.state.Value} onChange={e => this.setState({ Value: e.target.value })} />
+                            <Col {...colLayout}>
+                                <FormItem label="Contract Description" {...formItemLayout}>
+                                    <span style={{ fontWeight: 'bold' }}>{this.state.ContractDescription}</span>
+                                </FormItem>
+                            </Col>
+                            <Col {...colLayout}>
+                                <FormItem label="Status" {...formItemLayout}>
+                                    <Select value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })} >
+                                        {this.renderInvoiceStatuses()}
+                                    </Select>
+                                </FormItem>
+                            </Col>
                         </Row>
-
                         <Row>
-                            <FormItemLabel value="Date Raised: " />
-                            <FormItemDatePicker value={this.state.DateRaised}
-                                onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
+                            <Col {...colLayout}>
+                                <FormItem label="Current Status" {...formItemLayout}>
+                                    <span style={{ fontWeight: 'bold' }}>{this.state.StatusDescription}</span>
+                                </FormItem>
+                            </Col>
+                            <Col {...colLayout}>
+                                <FormItem label="Value" {...formItemLayout}>
+                                    {getFieldDecorator('value', {
+                                        initialValue: this.state.Value,
+                                        valuePropName: 'value',
+                                        rules: [{
+                                            required: true,
+                                            message: 'Value is required',
+                                        }],
+                                    })(
+                                        <Input onChange={e => this.setState({ Value: e.target.value })} type="number" />
+                                    )}
+                                </FormItem>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col {...colLayout}>
+                                <FormItem label="Date Raised" {...formItemLayout}>
+                                    <DatePicker value={this.state.DateRaised} onChange={(date, dateString) => { this.setState({ DateRaised: date }) }} />
+                                </FormItem>
+                            </Col>
                         </Row>
                         <br>
                         </br>
                         <Row>
                             <Col span={8} />
                             <Col span={8}>
-                                <Button type="primary" style={{ width: '100%' }} size="large" onClick={this.onSubmit.bind(this)} >Submit</Button>
-                                {/* htmlType="submit" */}
+                                <Button type="primary" style={{ width: '100%' }} size="large" htmlType="submit">Submit</Button>
                             </Col>
                             <Col span={8} />
                             <div className="errors">
                                 {this.state.errors.map(error => <div key={error}>{error}</div>)}
                             </div>
                         </Row>
-                    {/* </Form> */}
+                    </Form>
                 </div>
             );
         }
     }
 }
-// export default graphql(findById, {
-//     options: (props) => { return { variables: { id: props.params.id } } }
-// })(Invoice);
-export default withApollo(InvoiceCreate);
+export default withApollo(Form.create()(InvoiceCreate));

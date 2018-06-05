@@ -61,3 +61,22 @@ const webpackConfig = require('../webpack.config.js');
 app.use(webpackMiddleware(webpack(webpackConfig)));
 
 module.exports = app;
+
+// var soap = require('soap');
+// var url = 'http://localhost:3881/EDIInterface.asmx?WSDL';
+
+// reqURL = soap.createClient(url, function(err, client){
+//     if(err) { 
+//         console.log(err);
+//         return;
+//     }
+
+//     client.UploadDataXML_raw("<xml>test</xml>", function(err, response){
+//             if(err) {
+//                 console.log("error: ", err);
+//                 return;
+//             }
+
+//             console.log("response: ", response);
+//     });
+// });
