@@ -7,6 +7,7 @@ const Option = Select.Option;
 
 import create from '../mutations/CreateInvoice';
 import findById from '../queries/InvoiceByID';
+import findLookups from '../queries/InvoiceLookups';
 import update from '../mutations/UpdateInvoice';
 
 import toastr from 'toastr';
@@ -15,35 +16,28 @@ import '../../node_modules/toastr/build/toastr.css';
 class InvoiceCreate extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
             StatusDescription: null, Value: null, DateRaised: moment(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
         };
     }
     componentDidMount() {
-        //edit existing
-        if (this.props.params.id) {
-            this.props.client.query({
-                query: findById,
-                variables: { InvoiceID: this.props.params.id },
-                options: {
-                    fetchPolicy: 'network-only'
-                }
-            }).then((result) => {
-                let invoice = result.data.InvoiceByID[0];
-                if (invoice) {
-                    this.mapState(invoice);
-                }
-            });
-        }
+        this.props.client.query({
+            query: findLookups,
+            // options: {
+            //     fetchPolicy: 'network-only'
+            // }
+        }).then((result) => {
+            let lookups = result.data.InvoiceLookups;
+            if (lookups) {
+                console.log("LOOKUPS: ", lookups);
+                this.mapState(lookups);
+            }
+        });
     }
-    mapState(invoice) {
+    mapState(lookups) {
         this.setState({
-            InvoiceID: invoice.InvoiceID, InvoiceNumber: invoice.InvoiceNumber, ContractID: invoice.ContractID,
-            ContractDescription: invoice.ContractDescription, StatusID: invoice.StatusID,
-            StatusDescription: invoice.StatusDescription, Value: invoice.Value, DateRaised: moment(invoice.DateRaised),
-            errors: [], edit: true, InvoiceStatuses: invoice.InvoiceStatuses, Contracts: invoice.Contracts
+            DateRaised: moment(), errors: [], InvoiceStatuses: lookups.InvoiceStatuses, Contracts: lookups.Contracts
         });
     }
     onSubmit(event) {
@@ -80,16 +74,7 @@ class InvoiceCreate extends Component {
                         mutation: create,
                         variables: { InvoiceNumber, ContractID, StatusID, DateRaised, Value }
                     }).then(() => {
-                        swal({
-                            position: 'top-end',
-                            type: 'success',
-                            title: 'Invoice created',
-                            showConfirmButton: false,
-                            imageWidth: 100,
-                            imageHeight: 50,
-                            timer: 1000,
-                            animation: false
-                        })
+                        toastr.success('Invoice Created', 'Create Invoice', { timeOut: 1000 });
                     }).catch(res => {
                         const errors = res.graphQLErrors.map(error => error.message);
                         this.setState({ errors });
@@ -187,22 +172,10 @@ class InvoiceCreate extends Component {
                         </Row>
                         <Row>
                             <Col {...colLayout}>
-                                <FormItem label="Contract Description" {...formItemLayout}>
-                                    <span style={{ fontWeight: 'bold' }}>{this.state.ContractDescription}</span>
-                                </FormItem>
-                            </Col>
-                            <Col {...colLayout}>
                                 <FormItem label="Status" {...formItemLayout}>
                                     <Select value={this.state.StatusID} onChange={(value) => this.setState({ StatusID: value })} >
                                         {this.renderInvoiceStatuses()}
                                     </Select>
-                                </FormItem>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col {...colLayout}>
-                                <FormItem label="Current Status" {...formItemLayout}>
-                                    <span style={{ fontWeight: 'bold' }}>{this.state.StatusDescription}</span>
                                 </FormItem>
                             </Col>
                             <Col {...colLayout}>

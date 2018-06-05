@@ -15,3 +15,4 @@
 - validation
 - not logging out completely the first time
 - tests
+- Screens losing values between navigation

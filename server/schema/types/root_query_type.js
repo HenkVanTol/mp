@@ -4,6 +4,7 @@ const UserType = require('./user_type');
 const InvoiceSearchType = require('./invoiceSearch_type');
 const InvoiceStatusesType = require('./invoiceStatuses_type');
 const ContractsType = require('./contracts_type');
+const InvoiceLookupType = require('./invoiceLookup_type');
 const InvoiceService = require('../../services/invoice');
 const GraphQLDate = require('graphql-date');
 
@@ -39,6 +40,12 @@ const RootQueryType = new GraphQLObjectType({
       type: new GraphQLList(InvoiceStatusesType),
       resolve() {
         return InvoiceService.InvoiceStatuses();
+      }
+    },
+    InvoiceLookups: {
+      type: InvoiceLookupType,
+      resolve(parentValue, args) {
+        return [];
       }
     }
   }
