@@ -48937,65 +48937,7 @@ var InvoiceCreate = function (_Component) {
 exports.default = (0, _reactApollo.withApollo)(_form2.default.create()(InvoiceCreate));
 
 /***/ }),
-/* 484 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _form = __webpack_require__(52);
-
-var _form2 = _interopRequireDefault(_form);
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-__webpack_require__(53);
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _InvoiceEdit = __webpack_require__(209);
-
-var _InvoiceEdit2 = _interopRequireDefault(_InvoiceEdit);
-
-var _reactApollo = __webpack_require__(35);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var InvoiceEditWrapper = function (_React$Component) {
-    _inherits(InvoiceEditWrapper, _React$Component);
-
-    function InvoiceEditWrapper(props) {
-        _classCallCheck(this, InvoiceEditWrapper);
-
-        return _possibleConstructorReturn(this, (InvoiceEditWrapper.__proto__ || Object.getPrototypeOf(InvoiceEditWrapper)).call(this, props));
-    }
-
-    _createClass(InvoiceEditWrapper, [{
-        key: 'render',
-        value: function render() {
-            var WrappedInvoiceEdit = _form2.default.create()(_InvoiceEdit2.default);
-            return _react2.default.createElement(WrappedInvoiceEdit, null);
-        }
-    }]);
-
-    return InvoiceEditWrapper;
-}(_react2.default.Component);
-
-exports.default = InvoiceEditWrapper;
-
-/***/ }),
+/* 484 */,
 /* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -49072,15 +49014,19 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var FormItem = _form2.default.Item;
 
+
+var state = { InvoiceNumber: '', InvoiceStatusID: null, errors: [], dataSource: [] };
+
 var InvoiceSearch = function (_Component) {
     _inherits(InvoiceSearch, _Component);
 
     function InvoiceSearch(props) {
         _classCallCheck(this, InvoiceSearch);
 
+        //this.state = { InvoiceNumber: '', InvoiceStatusID: null, errors: [], dataSource: [] };
         var _this = _possibleConstructorReturn(this, (InvoiceSearch.__proto__ || Object.getPrototypeOf(InvoiceSearch)).call(this, props));
 
-        _this.state = { InvoiceNumber: '', InvoiceStatusID: null, errors: [], dataSource: [] };
+        _this.state = state;
         _this.columns = [{
             title: 'Invoice Number',
             dataIndex: 'InvoiceNumber',
@@ -49144,6 +49090,24 @@ var InvoiceSearch = function (_Component) {
             }).then(function (result) {
                 _this2.setState({ dataSource: result.data.InvoiceSearch });
             });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            console.log("componentDidMount");
+            this.setState(function (prevState) {
+                return {
+                    InvoiceNumber: prevState.InvoiceNumber,
+                    InvoiceStatusID: prevState.InvoiceStatusID
+                };
+            });
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log("componentWillUnmount");
+            // Remember state for the next mount
+            state = this.state;
         }
     }, {
         key: 'render',
@@ -62027,10 +61991,6 @@ var _InvoiceEdit = __webpack_require__(209);
 
 var _InvoiceEdit2 = _interopRequireDefault(_InvoiceEdit);
 
-var _InvoiceEditWrapper = __webpack_require__(484);
-
-var _InvoiceEditWrapper2 = _interopRequireDefault(_InvoiceEditWrapper);
-
 var _InvoiceCreate = __webpack_require__(483);
 
 var _InvoiceCreate2 = _interopRequireDefault(_InvoiceCreate);
@@ -62056,13 +62016,6 @@ var httpLink = (0, _apolloLinkHttp.createHttpLink)({
   uri: '/graphql',
   credentials: 'same-origin'
 });
-
-// const networkInterface = createNetworkInterface({
-//   uri: '/graphql',
-//   opts: {
-//     credentials: 'same-origin'
-//   }
-// });
 
 var client = new _apolloBoost.ApolloClient({
   link: httpLink,

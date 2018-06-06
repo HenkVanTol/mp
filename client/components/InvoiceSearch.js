@@ -8,10 +8,14 @@ import FormItemLabel from './common/FormItemLabel';
 import { Link } from 'react-router';
 import moment from 'moment';
 
+let state = { InvoiceNumber: '', InvoiceStatusID: null, errors: [], dataSource: [] };
+
 class InvoiceSearch extends Component {
+
     constructor(props) {
         super(props);
-        this.state = { InvoiceNumber: '', InvoiceStatusID: null, errors: [], dataSource: [] };
+        //this.state = { InvoiceNumber: '', InvoiceStatusID: null, errors: [], dataSource: [] };
+        this.state = state;
         this.columns = [{
             title: 'Invoice Number',
             dataIndex: 'InvoiceNumber',
@@ -59,6 +63,18 @@ class InvoiceSearch extends Component {
         }).then((result) => {
             this.setState({ dataSource: result.data.InvoiceSearch });
         });
+    }
+    componentDidMount() {
+        console.log("componentDidMount");
+        this.setState(prevState => ({
+            InvoiceNumber: prevState.InvoiceNumber,
+            InvoiceStatusID: prevState.InvoiceStatusID
+        }));
+    }
+    componentWillUnmount() {
+        console.log("componentWillUnmount");
+        // Remember state for the next mount
+        state = this.state;
     }
     render() {
         return (
