@@ -48181,6 +48181,11 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FormItem = _form2.default.Item;
 var Option = _select2.default.Option;
 
+var state = {
+    InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
+    StatusDescription: null, Value: null, DateRaised: (0, _moment2.default)(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
+};
+
 var InvoiceCreate = function (_Component) {
     _inherits(InvoiceCreate, _Component);
 
@@ -48189,10 +48194,7 @@ var InvoiceCreate = function (_Component) {
 
         var _this = _possibleConstructorReturn(this, (InvoiceCreate.__proto__ || Object.getPrototypeOf(InvoiceCreate)).call(this, props));
 
-        _this.state = {
-            InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
-            StatusDescription: null, Value: null, DateRaised: (0, _moment2.default)(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
-        };
+        _this.state = state;
         return _this;
     }
 
@@ -48201,6 +48203,7 @@ var InvoiceCreate = function (_Component) {
         value: function componentDidMount() {
             var _this2 = this;
 
+            console.log("componentDidMount");
             this.props.client.query({
                 query: _InvoiceLookups2.default
                 // options: {
@@ -48213,12 +48216,29 @@ var InvoiceCreate = function (_Component) {
                     _this2.mapState(lookups);
                 }
             });
+            this.setState(function (prevState) {
+                return {
+                    InvoiceNumber: prevState.InvoiceNumber,
+                    StatusID: prevState.StatusID,
+                    ContractID: prevState.ContractID,
+                    DateRaised: prevState.DateRaised,
+                    Value: prevState.Value
+                };
+            });
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log("componentWillUnmount");
+            // Remember state for the next mount
+            state = this.state;
         }
     }, {
         key: 'mapState',
         value: function mapState(lookups) {
             this.setState({
-                DateRaised: (0, _moment2.default)(), errors: [], InvoiceStatuses: lookups.InvoiceStatuses, Contracts: lookups.Contracts
+                //DateRaised: moment(), errors: [], InvoiceStatuses: lookups.InvoiceStatuses, Contracts: lookups.Contracts
+                InvoiceStatuses: lookups.InvoiceStatuses, Contracts: lookups.Contracts
             });
         }
     }, {

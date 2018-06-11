@@ -13,15 +13,18 @@ import update from '../mutations/UpdateInvoice';
 import toastr from 'toastr';
 import '../../node_modules/toastr/build/toastr.css';
 
+let state = {
+    InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
+    StatusDescription: null, Value: null, DateRaised: moment(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
+};
+
 class InvoiceCreate extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            InvoiceID: null, InvoiceNumber: null, ContractID: null, ContractDescription: null, StatusID: null,
-            StatusDescription: null, Value: null, DateRaised: moment(), errors: [], edit: false, InvoiceStatuses: [], Contracts: []
-        };
+        this.state = state;
     }
     componentDidMount() {
+        console.log("componentDidMount");
         this.props.client.query({
             query: findLookups,
             // options: {
@@ -34,10 +37,23 @@ class InvoiceCreate extends Component {
                 this.mapState(lookups);
             }
         });
+        this.setState(prevState => ({
+            InvoiceNumber: prevState.InvoiceNumber,
+            StatusID: prevState.StatusID,
+            ContractID: prevState.ContractID,
+            DateRaised: prevState.DateRaised,
+            Value: prevState.Value
+        }));
+    }
+    componentWillUnmount() {
+        console.log("componentWillUnmount");
+        // Remember state for the next mount
+        state = this.state;
     }
     mapState(lookups) {
         this.setState({
-            DateRaised: moment(), errors: [], InvoiceStatuses: lookups.InvoiceStatuses, Contracts: lookups.Contracts
+            //DateRaised: moment(), errors: [], InvoiceStatuses: lookups.InvoiceStatuses, Contracts: lookups.Contracts
+            InvoiceStatuses: lookups.InvoiceStatuses, Contracts: lookups.Contracts
         });
     }
     onSubmit(event) {
