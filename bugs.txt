@@ -1,0 +1,19 @@
+- edit invoice - done
+- can sign up multiple times
+- load dropdowns reliably (chain promise) - done
+- check for single graphql call: lookups plus result in one call - done
+- break sql statements into multiple lines
+- edit not refreshing - done
+- alert when persisted - done
+- responsive for more sizes - done
+- date format in grid - done
+- Contracts/Statuses should only be part of InvoiceByID, not InvoiceSearch - done (handled by graphql)
+- Datepicker not updating date - done
+- create new - done
+- search button resize - done
+- validation - done
+- not logging out completely the first time
+- tests
+- Screens losing values between navigation
+- ssl
+- Status dropdown on search screen
